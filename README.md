@@ -30,6 +30,12 @@ A Ionic based mobile game.
 
 	 	```
 	sudo chown -R NAME /usr/lib/node_modules/ionic
-	
+
 	sudo chown -R NAME /usr/lib/node_modules/cordova
 		```
+
+
+## Run
+
+1. navigate to Quadtrix/src/
+2. `ionic serve --lab`
