@@ -1,0 +1,11 @@
+{
+    "jscodehints.detectedExclusions": [
+        "/home/ogu/source/Quadtrix/src/platforms/android/assets/www/lib/ionic/js/angular-ui/angular-ui-router.min.js",
+        "/home/ogu/source/Quadtrix/src/platforms/android/platform_www/plugins/ionic-plugin-keyboard/www/android/keyboard.js",
+        "/home/ogu/source/Quadtrix/src/platforms/android/assets/www/lib/ionic/js/angular/angular-resource.js",
+        "/home/ogu/source/Quadtrix/src/platforms/android/platform_www/plugins/cordova-plugin-splashscreen/www/splashscreen.js",
+        "/home/ogu/source/Quadtrix/src/platforms/android/platform_www/plugins/cordova-plugin-statusbar/www/statusbar.js",
+        "/home/ogu/source/Quadtrix/src/www/js/gameController.js",
+        "/home/ogu/source/Quadtrix/src/platforms/android/cordova/lib/builders/builders.js"
+    ]
+}

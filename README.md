@@ -37,5 +37,16 @@ A Ionic based mobile game.
 
 ## Run
 
-1. navigate to Quadtrix/src/
-2. `ionic serve --lab`
+* navigate to `Quadtrix/src/`
+
+### in Browser
+
+`ionic serve --lab`
+
+### in Emlulator
+
+`ionic emulate android`
+
+### on Device
+
+`ionic run ios`
