@@ -1,1 +1,43 @@
 /* Empty. Add your own CSS if you like */
+
+body {
+    top: 0;
+    left: 0;
+}
+
+.bar {
+    background-color: transparent;
+    border: none;
+}
+
+.pane {
+    background-color: transparent;
+}
+
+.button.button-transparent {
+    border-color: transparent;
+    background-color: transparent;
+    color: #444;
+}
+
+.title {
+    text-align: center;
+    margin-top: 1.5em !important;
+    margin-bottom: 1em !important;
+    font-size: 5.5em;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+[nav-view-transition="ios"][nav-view-direction="forward"],
+[nav-view-transition="ios"][nav-view-direction="back"] {
+    background-color: transparent;
+}
+
+.button {
+    font-size: 2em;
+}

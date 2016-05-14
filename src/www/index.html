@@ -24,18 +24,22 @@
     <script src="js/app.js"></script>
     <script src="js/GameController.js"></script>
     <script src="js/StartController.js"></script>
-
-    <script>
-        var pattern = Trianglify({
-            width: window.innerWidth,
-            height: window.innerHeight
-        });
-        document.body.appendChild(pattern.canvas())
-    </script>
 </head>
 
 <body ng-app="app">
+
     <ion-nav-view name="content"></ion-nav-view>
+
 </body>
+
+<script>
+    var pattern = Trianglify({
+        /*set fixed color    x_colors: "Spectral",*/
+        variance: "0",
+        width: window.innerWidth,
+        height: window.innerHeight
+    });
+    document.body.appendChild(pattern.canvas())
+</script>
 
 </html>

@@ -23,6 +23,10 @@ app.run(function ($ionicPlatform) {
     });
 })
 
+app.config(function ($ionicConfigProvider) {
+    $ionicConfigProvider.views.transition('android');
+});
+
 app.config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('start', {
