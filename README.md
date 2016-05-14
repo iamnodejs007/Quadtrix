@@ -27,7 +27,9 @@ A Ionic based mobile game.
 	1. open cmd
 	2. Enter `npm install -g cordova ionic`
 	3. If you are on linux or mac:
+
 	 	```
 	sudo chown -R NAME /usr/lib/node_modules/ionic
+	
 	sudo chown -R NAME /usr/lib/node_modules/cordova
 		```
