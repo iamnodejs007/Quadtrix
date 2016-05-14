@@ -2,30 +2,32 @@
 A Ionic based mobile game.
 
 
-## Install
+## Setup Dev
 
+### required tools
 
-### Required Tools
-
-* git
-* ionic
-* Plattform SDK
+* Git
+* Ionic
+* Platform SDK (Android or iOS)
 
 
 ### GIT Setup:
 
-1. git install -> https://desktop.github.com/
+1. git install for Windows https://desktop.github.com/
 
-2. git clone https://github.com/oliverguhr/Quadtrix.git
+2. a) Clone Repo using Github for Windows or
+
+	`git clone https://github.com/oliverguhr/Quadtrix.git`
 
 ### Ionic setup:
 
-1. Node JS installieren https://nodejs.org/en/ 
+1. install NodeJS https://nodejs.org/en/
 
-2. Ionic installieren 
-	1. cmd öffnen
-	2. npm install -g cordova ionic
-	2. a) on linux or mac:
-		sudo chown -R NAME /usr/lib/node_modules/ionic
-		sudo chown -R NAME /usr/lib/node_modules/cordova
-
+2. install Ionic
+	1. open cmd
+	2. Enter `npm install -g cordova ionic`
+	3. If you are on linux or mac:
+	 	```
+	sudo chown -R NAME /usr/lib/node_modules/ionic
+	sudo chown -R NAME /usr/lib/node_modules/cordova
+		```
