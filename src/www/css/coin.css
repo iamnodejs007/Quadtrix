@@ -1,0 +1,11 @@
+@keyframes popup {
+  0% {
+    transform: translateX(-200px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+.positional51 {
+  animation: popup 2s 0s ease;
+}
