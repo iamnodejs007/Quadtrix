@@ -8,6 +8,8 @@
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/coin.css" rel="stylesheet">
+    <link href="css/map.css" rel="stylesheet">
 
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
@@ -15,18 +17,56 @@
 
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="lib/trianglify/dist/trianglify.min.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
     <!-- your app's js -->
+    <script src="js/mapController.js"></script>
+    <script src="js/coin.js"></script>
     <script src="js/app.js"></script>
     <script src="js/GameController.js"></script>
     <script src="js/StartController.js"></script>
 </head>
 
 <body ng-app="app">
+
     <ion-nav-view name="content"></ion-nav-view>
+
 </body>
+
+<script>
+    function generateBackground() {
+        var pattern = Trianglify({
+            /*set fixed color    x_colors: "Spectral",*/
+            variance: "0",
+            seed: Math.random(),
+            x_colors: 'random',
+
+            width: window.innerWidth,
+            height: window.innerHeight
+        });
+
+        /*delete exsisting backgrounds*/
+        var oldBackground = document.body.getElementsByTagName("canvas");
+        if (oldBackground.length === 1) {
+            oldBackground[0].remove();
+        }
+
+
+        document.body.appendChild(pattern.canvas())
+
+    }
+    /*set inital background*/
+    generateBackground();
+
+    /*prevent scrolling on device*/
+    window.addEventListener('load', function () {
+        document.body.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+        }, false);
+    }, false);
+</script>
 
 </html>

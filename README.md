@@ -49,4 +49,4 @@ A Ionic based mobile game.
 
 ### on Device
 
-`ionic run ios`
+`ionic run ios -l`
