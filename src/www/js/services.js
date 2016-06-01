@@ -1,5 +1,5 @@
 app.factory('socket', function ($rootScope) {
-  var socket = io("http://localhost:3000");
+  var socket = io("http://htwlessons.cloudapp.net:3000");
   return {
     on: function (eventName, callback) {
       socket.on(eventName, function () {
