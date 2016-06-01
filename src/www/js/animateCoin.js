@@ -1,7 +1,7 @@
-function AnimateCircle(coin,steps) {
-	var x = 40*steps;	
+function animateCircle(coin,steps) {
+	var x = 40*steps;
 	var circle = $('#'+coin.id);
-	
+
 	if (coin.direction == "north" || coin.direction == "south") {
 		if (coin.direction == "north") x=-x;
 		$(circle).velocity({
@@ -15,4 +15,3 @@ function AnimateCircle(coin,steps) {
 		},2000);
 	}
 }
-

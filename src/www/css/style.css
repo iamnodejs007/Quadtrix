@@ -5,6 +5,20 @@ body {
     left: 0;
 }
 
+p{
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    line-height: 1.5;
+}
+
+h1{
+  text-align: center;
+}
+
+div {
+  padding: 1.5em;
+
+}
 .bar {
     background-color: transparent;
     border: none;

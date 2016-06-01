@@ -37,9 +37,9 @@ class Map {
       return this.coins;
     }
 
-	animate(id){
-		AnimateCircle(this.coins[this.coins.length - 1],4);
+	animate(){
+		animateCircle(this.coins[this.coins.length - 1],4);
 	}
 
-	
+
 }
