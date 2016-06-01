@@ -5,6 +5,38 @@ body {
     left: 0;
 }
 
+p{
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    line-height: 1.5;
+}
+
+h1{
+  text-align: center;
+}
+
+div {
+  padding: 1.0em;
+
+}
+
+#behold {
+
+}
+
+#right {
+width: 50%;
+float:left;
+text-align: center;
+
+}
+#left {
+width: 50%;
+float: right;
+text-align: center;
+}
+
+
 .bar {
     background-color: transparent;
     border: none;

@@ -1,18 +1,68 @@
 <ion-view>
     <ion-content>
+        <h1 >Quadtrix</h1>
         <svg width="285" height="285" style="display:block;margin:auto;">
-            <g ng-repeat="x in [0, 1, 2, 3, 4, 5, 6]">
-                <rect ng-repeat="y in [0, 1, 2, 3, 4, 5, 6]" stroke-width="1px" stroke="#CCC"
-                 shape-rendering="crispEdges" width="40" height="40" fill="#FFF" ng-attr-x="{{x * 40}}" ng-attr-y="{{y * 40}}" ng-click="insertCoin(x, y)">
+          <defs>
+           <pattern id="pat" x="0" y="0" width="40" height="40" viewBox="0 0 40 40" patternUnits="userSpaceOnUse">
+             <path d="M383.6,322.7L278.6,423c-5.8,6-13.7,9-22.4,9c-8.7,0-16.5-3-22.4-9L128.4,322.7c-12.5-11.9-12.5-31.3,0-43.2
+ c12.5-11.9,32.7-11.9,45.2,0l50.4,48.2v-217c0-16.9,14.3-30.6,32-30.6c17.7,0,32,13.7,32,30.6v217l50.4-48.2
+ c12.5-11.9,32.7-11.9,45.2,0C396.1,291.4,396.1,310.7,383.6,322.7z" transform="scale(0.08,0.08)" class="arrow" ></path>
+           </pattern>
+          </defs>
+            <g ng-repeat="x in [ 1, 2, 3, 4, 5]">
+                <rect ng-repeat="y in [ 1, 2, 3, 4, 5]" stroke-width="1px" stroke="#CCC"
+                 shape-rendering="crispEdges" width="40" height="40" fill="#FFF" ng-attr-x="{{x * 40}}"
+                 ng-attr-y="{{y * 40}}" ng-click="insertCoin(x, y)">
                </rect>
             </g>
-            <g class="coinField" ng-repeat="coin in map.getCoins()">
-                <circle id="{{coin.id}}" class="slide-in"
-                ng-attr-cx="{{coin.x * 40 + 20}}" ng-attr-cy="{{coin.y * 40 + 20}}"
-                r="15" stroke="black" stroke-width="1" fill="{{coin.color}}" on-finish-render>
+            <g ng-repeat="coin in map.getCoins()">
+                <circle class="coin" ng-attr-cx="{{coin.x * 40 + 20}}" ng-attr-cy="{{coin.y * 40 + 20}}" r="15" stroke="black" stroke-width="1" fill="{{coin.color}}" id="{{coin.id}}" on-finish-render></circle>
             </g>
-
+			      <g ng-repeat="z in [1, 2, 3, 4, 5]">
+              <rect class="arrow-down" ng-attr-x="{{z * 40}}" y="0" width="40" height="40" fill="url(#pat)" ng-click="insertCoin(z,0)"></rect>
+              <rect class="arrow-right" x="0" ng-attr-y="{{z * 40}}" width="40" height="40" fill="url(#pat)" ng-click="insertCoin(0,z)"></rect>
+              <rect class="arrow-left" x="240" ng-attr-y="{{z * 40}}" width="40" height="40" fill="url(#pat)" ng-click="insertCoin(6,z)"></rect>
+              <rect class="arrow-up" ng-attr-x="{{z * 40}}" y="240" width="40" height="40" fill="url(#pat)" ng-click="insertCoin(z,6)"></rect>
+            </g>
         </svg>
+        <svg viewBox="0 0 100 100" width="100" height="100" style="display:block;margin:auto;">
+			     <circle id="optcircle" cx="50" cy="50" r="45" fill="white" stroke="hsl(390,85%,60%)" stroke-width="10"></circle>
+			     <text id="optnumber" x="35" y="65" fill="hsl(390,85%,60%)" font-size="50">0</text>
+           <!-- Sample Function to animate Timer:
+
+           var optcounter = document.getElementById('optdown');
+            var optnumber = document.getElementById('optnumber');
+            var optcircle = document.getElementById('optcircle');
+
+            startbutton.onclick =
+            counter.onclick = function () {
+               function countdown (time,hue) {
+                  time -= 1;
+                  hue += 60;
+                  number.firstChild.nodeValue = time;
+                  optcircle.setAttribute('stroke','hsl(' + hue + ',85%,60%)');
+                  optnumber.setAttribute('fill','hsl(' + hue + ',85%,60%)');
+                  if (time > 0) {
+                     setTimeout( countdown, 1000, time, hue);
+                  }
+               }
+               countdown(6, 30);
+            }-->
+		    </svg>
+        <div id="behold">
+
+
+          <div id="right">
+            <p style="color: red">Player1: 1234</p>
+          </div>
+          <div id="left">
+            <p style="color: blue">Player2: 2345</p>
+          </div>
+        </div>
+
+
+
+
 
         <button ng-click="back()" class="button button-full button-positive">
             Back

@@ -1,0 +1,23 @@
+.arrow{
+  fill:black;
+  stroke:black;
+}
+
+.arrow-down{
+
+}
+
+.arrow-right{
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.arrow-left{
+  transform: rotate(90deg);
+  transform-origin: 50% 50%;
+}
+
+.arrow-up{
+  transform: rotate(180deg);
+  transform-origin: 50% 50%;
+}
