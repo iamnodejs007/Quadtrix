@@ -8,8 +8,10 @@ class Map {
 
     applyCoin(coin) { // 6 und 2
       // coin id to find coin in array
-      coin.id = this.coinCount;
-      this.coinCount++;
+     // TODO: Line is FUll Block
+     // TODO: Block Interaction during Animation
+     // TODO: Block Interaction during enemy player Turn
+
 
       if (!((coin.x == 0 && coin.y == 0) ||
           (coin.x == 0 && coin.y == this.height) ||
@@ -18,29 +20,22 @@ class Map {
       ) {
         if (coin.x == 0) {
             coin.direction = 'east';
-            // move whole row if its space before and stay at last free spot
-            var coinsInLine = this.getLineCoins(coin.y, coin.direction);
-            // moveAndAdd(coinsInLine, direction, this.width - 1, coin.y);
-
-            coin.x = this.width - coinsInLine.length - 1;
+            coin.x = 1;
             this.coins.push(coin);
         }
         if (coin.y == 0) {
             coin.direction = 'south';
-            var coinsInLine = this.getLineCoins(coin.x, coin.direction);
-            coin.y = this.height - coinsInLine.length - 1;
+            coin.y = 1;
             this.coins.push(coin);
         }
         if (coin.x == this.width) {
            coin.direction = 'west';
-           var coinsInLine = this.getLineCoins(coin.y, coin.direction);
-           coin.x = 1 + coinsInLine.length;
+           coin.x = this.width - 1;
            this.coins.push(coin);
         }
         if (coin.y == this.height) {
           coin.direction = 'north';
-          var coinsInLine = this.getLineCoins(coin.x, coin.direction);
-          coin.y = 1 + coinsInLine.length;
+          coin.y = this.height - 1;
           this.coins.push(coin);
         }
       }
@@ -88,4 +83,46 @@ class Map {
     getCoins() {
       return this.coins;
     }
+
+    getCoin(id)
+    {
+      var coin;
+      for (var i = 0; i < this.coins.length; i++) {
+        if(this.coins[i].id == id)
+        {
+           coin = this.coins[i];
+           break;
+        }
+      }
+      return coin;
+    }
+
+	animate(doneFn){
+    // get last inserted coin
+    var lastCoin = this.coins[this.coins.length - 1];
+    var line;
+
+    // get movement
+    switch(lastCoin.direction) {
+      case "east":
+         line = lastCoin.y;
+         break;
+      case "west":
+         line = lastCoin.y;
+         break;
+      case "north":
+         line = lastCoin.x;
+         break;
+      case "south":
+         line = lastCoin.x;
+         break;
+      default:
+         console.log('No Valid Coin.');
+    }
+
+    var line = this.getLineCoins(line, lastCoin.direction);
+    // animate
+    var way = this.width - line.length - 1;
+    AnimateCircle(lastCoin, way,doneFn);
+	}
 }
