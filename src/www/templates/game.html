@@ -1,7 +1,5 @@
 <ion-view>
     <ion-content>
-        <h1>This is a game.</h1>
-
         <svg width="285" height="285" style="display:block;margin:auto;">
             <g ng-repeat="x in [0, 1, 2, 3, 4, 5, 6]">
                 <rect ng-repeat="y in [0, 1, 2, 3, 4, 5, 6]" stroke-width="1px" stroke="#CCC"
@@ -9,10 +7,11 @@
                </rect>
             </g>
             <g ng-repeat="coin in map.getCoins()">
-                <circle class="positional{{coin.x}}{{coin.y}}" ng-attr-cx="{{coin.x * 40 + 20}}" ng-attr-cy="{{coin.y * 40 + 20}}" r="15" stroke="black" stroke-width="1" fill="{{coin.color}}" />
-            <g>
+                <circle class="positional" ng-attr-cx="{{coin.x * 40 + 20}}" ng-attr-cy="{{coin.y * 40 + 20}}" r="15" stroke="black" stroke-width="1" fill="{{coin.color}}" id="{{coin.id}}" on-finish-render/>
+            </g>
+			
         </svg>
-
+		
         <button ng-click="back()" class="button button-full button-positive">
             Back
         </button>

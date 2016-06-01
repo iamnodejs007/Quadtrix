@@ -50,3 +50,17 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/start');
 });
+
+app.directive('onFinishRender', function ($timeout) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attr) {
+            if (scope.$last === true) {
+                $timeout(function () {
+                    scope.$emit('ngRepeatFinished');
+                });
+            }
+        }
+    }
+});
+

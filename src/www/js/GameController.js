@@ -1,5 +1,6 @@
 app.controller('GameController', function ($scope, $state) {
     $scope.map = new Map(6, 6);
+	var i=0;
 
     $scope.back = function () {
         console.log('hallo game');
@@ -9,6 +10,11 @@ app.controller('GameController', function ($scope, $state) {
 
     $scope.insertCoin = function(x, y) {
         console.log('insertCoin');
-        $scope.map.applyCoin(new Coin(x, y, 'me'));
+		i++;
+        $scope.map.applyCoin(new Coin(x, y, 'me',i));
     }
+	
+	$scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+		$scope.map.animate();
+	});
 });

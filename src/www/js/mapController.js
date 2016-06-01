@@ -12,22 +12,22 @@ class Map {
       ) {
         if (coin.x == 0) {
             coin.direction = 'east';
-            coin.x = this.width - 1;
+            coin.x = 1;
             this.coins.push(coin);
         }
         if (coin.y == 0) {
             coin.direction = 'south';
-            coin.y = this.height - 1;
+            coin.y = 1;
             this.coins.push(coin);
         }
         if (coin.x == this.width) {
            coin.direction = 'west';
-           coin.x = 1;
+           coin.x = this.width - 1;
            this.coins.push(coin);
         }
         if (coin.y == this.height) {
           coin.direction = 'north';
-          coin.y = 1;
+          coin.y = this.height - 1;
           this.coins.push(coin);
         }
       }
@@ -37,4 +37,9 @@ class Map {
       return this.coins;
     }
 
+	animate(id){
+		AnimateCircle(this.coins[this.coins.length - 1],4);
+	}
+
+	
 }
