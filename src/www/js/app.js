@@ -4,6 +4,8 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 var app = angular.module('app', ['ionic']);
+app.constant('ApiUrl', '');
+app.constant('ApiPath', '/api/');
 
 app.run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
@@ -63,4 +65,3 @@ app.directive('onFinishRender', function ($timeout) {
         }
     }
 });
-

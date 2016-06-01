@@ -1,5 +1,6 @@
-app.factory('socket', function ($rootScope) {
-  var socket = io("http://htwlessons.cloudapp.net:3000");
+app.factory('socket', function ($rootScope,ApiUrl,ApiPath) {
+  console.log("Connecting to socket");
+  var socket = io("/", {path: ApiPath+'socket.io'});
   return {
     on: function (eventName, callback) {
       socket.on(eventName, function () {
