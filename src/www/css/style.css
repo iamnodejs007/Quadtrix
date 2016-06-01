@@ -16,9 +16,27 @@ h1{
 }
 
 div {
-  padding: 1.5em;
+  padding: 1.0em;
 
 }
+
+#behold {
+
+}
+
+#right {
+width: 50%;
+float:left;
+text-align: center;
+
+}
+#left {
+width: 50%;
+float: right;
+text-align: center;
+}
+
+
 .bar {
     background-color: transparent;
     border: none;
