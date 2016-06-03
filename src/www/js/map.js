@@ -68,7 +68,11 @@ class Map {
           // set coin direction
           coinsInLine[i].direction = direction;
           // move coin by one.
-          AnimateCircle(coinsInLine[i], 1, doneFn);
+
+          // Cant call it within loop.
+          //Root Of all Evil... outside of the while function it works.
+
+          // AnimateCircle(coinsInLine[i], 1, doneFn);
         }
       }
     }
