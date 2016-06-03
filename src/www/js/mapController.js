@@ -11,6 +11,7 @@ class Map {
      // TODO: Line is FUll Block
      // TODO: Block Interaction during Animation
      // TODO: Block Interaction during enemy player Turn
+     if (this.coins.length % 2 == 0) { coin.color = 'blue' }
 
 
       if (!((coin.x == 0 && coin.y == 0) ||

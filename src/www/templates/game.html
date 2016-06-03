@@ -8,6 +8,19 @@
  c12.5-11.9,32.7-11.9,45.2,0l50.4,48.2v-217c0-16.9,14.3-30.6,32-30.6c17.7,0,32,13.7,32,30.6v217l50.4-48.2
  c12.5-11.9,32.7-11.9,45.2,0C396.1,291.4,396.1,310.7,383.6,322.7z" transform="scale(0.08,0.08)" class="arrow" ></path>
            </pattern>
+           <radialGradient id="blueCoinGradient"
+              fx="5%" fy="5%" r="65%"
+              spreadMethod="pad">
+             <stop offset="0%"   stop-color="#ffffff" stop-opacity="1"/>
+             <stop offset="100%" stop-color="#0066cc" stop-opacity="1" />
+           </radialGradient>
+            <radialGradient id="redCoinGradient"
+               fx="5%" fy="5%" r="65%"
+               spreadMethod="pad">
+              <stop offset="0%"   stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#cc3300" stop-opacity="1" />
+            </radialGradient>
+
           </defs>
             <g ng-repeat="x in [ 1, 2, 3, 4, 5]">
                 <rect ng-repeat="y in [ 1, 2, 3, 4, 5]" stroke-width="1px" stroke="#CCC"
@@ -16,7 +29,8 @@
                </rect>
             </g>
             <g ng-repeat="coin in map.getCoins()">
-                <circle class="coin" ng-attr-cx="{{coin.x * 40 + 20}}" ng-attr-cy="{{coin.y * 40 + 20}}" r="15" stroke="black" stroke-width="1" fill="{{coin.color}}" id="{{coin.id}}" on-finish-render></circle>
+                <circle class="coin" ng-attr-cx="{{coin.x * 40 + 20}}" ng-attr-cy="{{coin.y * 40 + 20}}" r="15" stroke="black"
+                        style="fill:url(#{{coin.color}}CoinGradient);"  stroke-width="0.5" fill="{{coin.color}}" id="{{coin.id}}" on-finish-render></circle>
             </g>
 			      <g ng-repeat="z in [1, 2, 3, 4, 5]">
               <rect class="arrow-down" ng-attr-x="{{z * 40}}" y="0" width="40" height="40" fill="url(#pat)" ng-click="insertCoin(z,0)"></rect>

@@ -28,6 +28,16 @@ function AnimateCircle(coin,steps,doneFn) {
 		if (coin.direction == "west") movement=-movement;
     $.Velocity.animate(circle, {
 			translateX: movement+"px"
-		}).then(function() { coin.x =+ movement / fieldsize });
+		},500).then(function() {
+      if (coin.direction == "west") {
+        coin.x = coin.x - steps;
+      } else {
+        coin.x = coin.x + steps;
+      }
+      $.Velocity.animate(circle, {
+        translateX: 0+"px"
+      }, 0);
+      doneFn();
+    });
 	}
 }
