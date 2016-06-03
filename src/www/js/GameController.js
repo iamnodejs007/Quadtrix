@@ -1,5 +1,5 @@
-var map = new Map(6, 6, [new player('name1', 0, 'red'),new player('name2', 0, 'blue')]);
-app.controller('GameController', function ($scope, $state,$timeout) {
+let map = new Map(6, 6, [new player('name1', 0, 'red'), new player('name2', 0, 'blue')]);
+app.controller('GameController', function ($scope, $state, $timeout) {
 
   $scope.map = map;
   var currentPlayer = map.players[0];
@@ -31,8 +31,12 @@ app.controller('GameController', function ($scope, $state,$timeout) {
        If you like to see what this does, just remove the $timeout call
        from the line below.
     */
-    // alow coininsert as sone as the animation from previews insert is finished.
-		$scope.map.animate(function(){$timeout(function(){ lockField = false; },0)});
+		$scope.map.animate(
+      // unlock Field and Redraw
+      function(){$timeout(function(){ lockField = false; },0)},
+      // animation Timeout and Redraw.
+      function(){$timeout(function(){},0)}
+    );
 	});
 
 });
