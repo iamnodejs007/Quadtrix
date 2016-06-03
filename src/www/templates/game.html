@@ -64,13 +64,8 @@
             }-->
 		    </svg>
         <div id="behold">
-
-
-          <div id="right">
-            <p style="color: red">Player1: 1234</p>
-          </div>
-          <div id="left">
-            <p style="color: blue">Player2: 2345</p>
+          <div id="right" ng-repeat="player in map.getPlayers()">
+            <p>{{player.name}}:<br> {{player.score}}</p>
           </div>
         </div>
 

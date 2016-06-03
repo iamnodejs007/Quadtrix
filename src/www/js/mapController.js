@@ -1,9 +1,10 @@
 class Map {
-    constructor(w, h) {
+    constructor(w, h, players) {
     this.height = h;
     this.width = w;
     this.coins = [];
     this.coinCount = 0;
+    this.players = players;
     }
 
     applyCoin(coin) { // 6 und 2
@@ -84,6 +85,9 @@ class Map {
     getCoins() {
       return this.coins;
     }
+    getPlayers() {
+      return this.players;
+    }
 
     getCoin(id)
     {
@@ -121,7 +125,10 @@ class Map {
          console.log('No Valid Coin.');
     }
 
+    // Move Coins in Line
     var line = this.getLineCoins(line, lastCoin.direction);
+
+
     // animate
     var way = this.width - line.length - 1;
     AnimateCircle(lastCoin, way,doneFn);

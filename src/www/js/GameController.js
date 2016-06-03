@@ -1,8 +1,10 @@
-var map = new Map(6, 6);
+var map = new Map(6, 6, [new player('name1', 0, 'red'),new player('name2', 0, 'blue')]);
 app.controller('GameController', function ($scope, $state,$timeout) {
 
   $scope.map = map;
+  var currentPlayer = map.players[0];
 	var coinCount=0;
+  var lockField = false;
 
     $scope.back = function () {
         console.log('hallo game');
@@ -12,8 +14,13 @@ app.controller('GameController', function ($scope, $state,$timeout) {
 
     $scope.insertCoin = function(x, y) {
         console.log('insertCoin');
-		    coinCount++;
-        $scope.map.applyCoin(new Coin(x, y, 'me', coinCount));
+        coinCount++;
+
+        // only insert if allowed.
+        if(lockField == false) {
+          lockField = true;
+          $scope.map.applyCoin(new Coin(x, y, 'me', coinCount));
+        }
 
     }
 
@@ -24,7 +31,8 @@ app.controller('GameController', function ($scope, $state,$timeout) {
        If you like to see what this does, just remove the $timeout call
        from the line below.
     */
-		$scope.map.animate(function(){$timeout(function(){},0)});
+    // alow coininsert as sone as the animation from previews insert is finished.
+		$scope.map.animate(function(){$timeout(function(){ lockField = false; },0)});
 	});
 
 });
