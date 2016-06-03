@@ -63,7 +63,7 @@ class Map {
     moveLine(coinsInLine, direction, doneFn) {
       // if there are moveable coins within that line move them towards
       // target direction until no moveable element is left.
-      while(this.isMoveable(coinsInLine)) {
+      /* while(this.isMoveable(coinsInLine)) {
         for (var i = 0; i < coinsInLine.length; i++) {
           // set coin direction
           coinsInLine[i].direction = direction;
@@ -74,7 +74,7 @@ class Map {
 
           // AnimateCircle(coinsInLine[i], 1, doneFn);
         }
-      }
+      } */
     }
 
 
