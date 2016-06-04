@@ -33,7 +33,10 @@ app.controller('GameController', function ($scope, $state, $timeout) {
     */
 		$scope.map.animate(
       // unlock Field and Redraw
-      function(){$timeout(function(){ lockField = false; },0)},
+      // lock thee Field for 1 sek. till the animation is over
+      // maybe not needed if we have player interaction where the game field is locked through
+      // the enemy Turn anyways.
+      function(){$timeout(function(){ lockField = false; }, 1000)},
       // animation Timeout and Redraw.
       function(){$timeout(function(){},0)}
     );

@@ -32,9 +32,9 @@ class Map {
 
     applyCoin(coin, unlockField) { // 6 und 2
       // coin id to find coin in array
-     // TODO: Line is FUll Block
-     // TODO: Block Interaction during Animation
-     // TODO: Block Interaction during enemy player Turn
+     // TODO: [x]  Line is FUll Block
+     // TODO: [x] Block Interaction during Animation // fieldLock gets called to early :/
+     // TODO: [ ] Block Interaction during enemy player Turn
      if (this.coins.length % 2 == 0) { coin.color = 'blue' }
 
 
@@ -219,7 +219,7 @@ class Map {
     var line = this.getLineCoins(line, lastCoin.direction);
     this.moveLine(line, lastCoin.direction, doneFn);
 
-    // undlock gamefield and force Readraw
+    // undlock gamefield and force Readraw // Triggers to early
     unlockField();
 	}
 }
