@@ -1,5 +1,5 @@
 class Coin {
-    constructor(x, y, owner,id) {
+    constructor(x, y, owner, id) {
   	this.id = id;
     this.x = x;
     this.y = y;

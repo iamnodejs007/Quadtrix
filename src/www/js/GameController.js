@@ -19,7 +19,7 @@ app.controller('GameController', function ($scope, $state, $timeout) {
         // only insert if allowed.
         if(lockField == false) {
           lockField = true;
-          $scope.map.applyCoin(new Coin(x, y, 'me', coinCount));
+          $scope.map.applyCoin(new Coin(x, y, 'me', coinCount), function(){ lockField = false; });
         }
 
     }

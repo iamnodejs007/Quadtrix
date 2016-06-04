@@ -30,7 +30,7 @@ class Map {
       return coinsXY;
     }
 
-    applyCoin(coin) { // 6 und 2
+    applyCoin(coin, unlockField) { // 6 und 2
       // coin id to find coin in array
      // TODO: Line is FUll Block
      // TODO: Block Interaction during Animation
@@ -46,22 +46,39 @@ class Map {
         if (coin.x == 0) {
             coin.direction = 'east';
             coin.x = 1; coin.targetX = 1;
-            this.coins.push(coin);
+            // only push if there is space forit
+            if(this.getLineCoins(coin.y, coin.direction).length != this.width - 1) {
+              this.coins.push(coin);
+            } else {
+              unlockField();
+            }
         }
         if (coin.y == 0) {
             coin.direction = 'south';
             coin.y = 1; coin.targetY = 1;
-            this.coins.push(coin);
+            if(this.getLineCoins(coin.x, coin.direction).length != this.height - 1) {
+              this.coins.push(coin);
+            } else {
+              unlockField();
+            }
         }
         if (coin.x == this.width) {
            coin.direction = 'west';
            coin.x = this.width - 1; coin.targetX = this.width - 1;
-           this.coins.push(coin);
+           if(this.getLineCoins(coin.y, coin.direction).length != this.width - 1) {
+             this.coins.push(coin);
+           } else {
+             unlockField();
+           }
         }
         if (coin.y == this.height) {
           coin.direction = 'north';
           coin.y = this.height - 1; coin.targetY =  this.height - 1;
-          this.coins.push(coin);
+          if(this.getLineCoins(coin.x, coin.direction).length != this.height - 1) {
+            this.coins.push(coin);
+          } else {
+            unlockField();
+          }
         }
       }
     }
@@ -86,7 +103,8 @@ class Map {
     moveLine(coinsInLine, direction, doneFn) {
       // if there are moveable coins within that line move them towards
       // target direction until no moveable element is left.
-       while(this.isMoveable(coinsInLine, direction)) { /* */ }
+      this.isMoveable(coinsInLine, direction);
+
 
       for (var i = 0; i < this.coins.length; i++) {
         // calc destination
@@ -103,57 +121,57 @@ class Map {
 
 
     isMoveable(coinsInLine, direction) {
-      for (var i = 0; i < coinsInLine.length; i++) {
-        // set coin direction, not sure if we need to set it
-        // or if we need the original direction later on...
-        // both is posible.
-        coinsInLine[i].direction = direction;
+      while(this.hasMoveableCoins(coinsInLine)) {
+        for (var i = 0; i < coinsInLine.length; i++) {
+          // set coin direction, not sure if we need to set it
+          // or if we need the original direction later on...
+          // both is posible.
+          coinsInLine[i].direction = direction;
 
-        // detect movement and set new targetXY if possible
-        switch(coinsInLine[i].direction) {
-          case "east":
-              // for 2 or more elements check if the element blocked by another coin or hit the wall
-              if (this.getCoinByXY(coinsInLine[i].targetX + 1, coinsInLine[i].targetY).length > 0
-                  || coinsInLine[i].targetX == this.width - 1) {
-                 coinsInLine[i].isMoveable = false;
-              } else {
-                 coinsInLine[i].targetX = coinsInLine[i].targetX + 1;
-                 coinsInLine[i].isMoveable = true;
-              }
-              break;
-          case "west":
-              if (this.getCoinByXY(coinsInLine[i].targetX - 1, coinsInLine[i].targetY).length > 0
-                  || coinsInLine[i].targetX == 1) {
-                 coinsInLine[i].isMoveable = false;
-              } else {
-                 coinsInLine[i].targetX = coinsInLine[i].targetX - 1;
-                 coinsInLine[i].isMoveable = true;
-              }
-              break;
-          case "north":
-              if (this.getCoinByXY(coinsInLine[i].targetX, coinsInLine[i].targetY - 1).length > 0
-                  || coinsInLine[i].targetY == 1) {
-                 coinsInLine[i].isMoveable = false;
-              } else {
-                 coinsInLine[i].targetY = coinsInLine[i].targetY - 1;
-                 coinsInLine[i].isMoveable = true;
-              }
-              break;
-          case "south":
-              if (this.getCoinByXY(coinsInLine[i].targetX, coinsInLine[i].targetY + 1).length > 0
-                  || coinsInLine[i].targetY == this.height - 1) {
-                 coinsInLine[i].isMoveable = false;
-              } else {
-                 coinsInLine[i].targetY = coinsInLine[i].targetY + 1;
-                 coinsInLine[i].isMoveable = true;
-              }
-              break;
-          default:
-             console.log('No Valid Coin.');
+          // detect movement and set new targetXY if possible
+          switch(coinsInLine[i].direction) {
+            case "east":
+                // for 2 or more elements check if the element blocked by another coin or hit the wall
+                if (this.getCoinByXY(coinsInLine[i].targetX + 1, coinsInLine[i].targetY).length > 0
+                    || coinsInLine[i].targetX == this.width - 1) {
+                   coinsInLine[i].isMoveable = false;
+                } else {
+                   coinsInLine[i].targetX = coinsInLine[i].targetX + 1;
+                   coinsInLine[i].isMoveable = true;
+                }
+                break;
+            case "west":
+                if (this.getCoinByXY(coinsInLine[i].targetX - 1, coinsInLine[i].targetY).length > 0
+                    || coinsInLine[i].targetX == 1) {
+                   coinsInLine[i].isMoveable = false;
+                } else {
+                   coinsInLine[i].targetX = coinsInLine[i].targetX - 1;
+                   coinsInLine[i].isMoveable = true;
+                }
+                break;
+            case "north":
+                if (this.getCoinByXY(coinsInLine[i].targetX, coinsInLine[i].targetY - 1).length > 0
+                    || coinsInLine[i].targetY == 1) {
+                   coinsInLine[i].isMoveable = false;
+                } else {
+                   coinsInLine[i].targetY = coinsInLine[i].targetY - 1;
+                   coinsInLine[i].isMoveable = true;
+                }
+                break;
+            case "south":
+                if (this.getCoinByXY(coinsInLine[i].targetX, coinsInLine[i].targetY + 1).length > 0
+                    || coinsInLine[i].targetY == this.height - 1) {
+                   coinsInLine[i].isMoveable = false;
+                } else {
+                   coinsInLine[i].targetY = coinsInLine[i].targetY + 1;
+                   coinsInLine[i].isMoveable = true;
+                }
+                break;
+            default:
+               console.log('No Valid Coin.');
+          }
         }
       }
-      // return True if there are moveable coins left.
-       return this.hasMoveableCoins(coinsInLine);
     }
 
     // surely redundant but needed at the moment.
