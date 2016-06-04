@@ -1,4 +1,4 @@
-let map = new Map(6, 6, [new player('name1', 0, 'red'), new player('name2', 0, 'blue')]);
+let map = new Map(6, 6, [new player('Bob', 0, 'red'), new player('Alice', 0, 'blue')]);
 app.controller('GameController', function ($scope, $state, $timeout) {
 
   $scope.map = map;
@@ -36,7 +36,11 @@ app.controller('GameController', function ($scope, $state, $timeout) {
       // lock thee Field for 1 sek. till the animation is over
       // maybe not needed if we have player interaction where the game field is locked through
       // the enemy Turn anyways.
-      function(){$timeout(function(){ lockField = false; }, 1000)},
+      function(){$timeout(function(){
+        lockField = false;
+        $scope.map.checkAllRowsForTermination();
+        $scope.map.checkAllCollsForTermination();
+      }, 1000)},
       // animation Timeout and Redraw.
       function(){$timeout(function(){},0)}
     );

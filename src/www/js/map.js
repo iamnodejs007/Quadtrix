@@ -5,6 +5,7 @@ class Map {
     this.coins = [];
     this.coinCount = 0;
     this.players = players;
+    this.coinsToSolve = 3;
     }
 
     getCoins() { return this.coins; }
@@ -13,21 +14,19 @@ class Map {
     // not needed yet.
     getCoinByID(id)
     {
-      var coin = [];
-      coin = this.coins.filter(function(coin) {
+      //var coin = [];
+      return coin = this.coins.filter(function(coin) {
         return coin.id === id;
       })
-      return coin;
+      // return coin;
     }
 
     // required for neighbor detection.
     getCoinByXY(x, y)
     {
-      var coinsXY = [];
-      coinsXY = this.coins.filter(function(coinsXY) {
+      return this.coins.filter(function(coinsXY) {
         return coinsXY.targetX === x && coinsXY.targetY === y;
       })
-      return coinsXY;
     }
 
     applyCoin(coin, unlockField) { // 6 und 2
@@ -35,7 +34,13 @@ class Map {
      // TODO: [x]  Line is FUll Block
      // TODO: [x] Block Interaction during Animation // fieldLock gets called to early :/
      // TODO: [ ] Block Interaction during enemy player Turn
-     if (this.coins.length % 2 == 0) { coin.color = 'blue' }
+     if (this.coins.length % 2 == 0) {
+       coin.color = this.players[0].color;
+       coin.owner = this.players[0].name;
+     } else {
+       coin.color = this.players[1].color;
+       coin.owner = this.players[1].name;
+     }
 
 
       if (!((coin.x == 0 && coin.y == 0) ||
@@ -186,10 +191,106 @@ class Map {
       return hasMoveables;
     }
 
-    checkAllRowsForTermination() {
-        // TODO: Prove Lines
-        // TODO: Prove Diagonal
+  checkAllCollsForTermination() {
+    for (var i = 1; i < this.width; i++) {
+      let lastOwner = "";
+      let currentOwner = "";
+      let count = 0;
+      var coinsToRemove = [];
+      for (var j = 1; j < this.height; j++) {
+        // get coin on Position
+        let coin = this.getCoinByXY(i, j)[0];
+        // creat Dummy Coin if no coin exists
+        if (coin == undefined) {
+          if (count >= this.coinsToSolve) {
+            this.removeCoins(coinsToRemove);
+            count++;
+            var player = this.players.find(function(player) { return player.name === lastOwner; });
+            player.score = player.score + count;
+          }
+          coinsToRemove = []; count = 0;
+        } else if (coin.owner != lastOwner && count >= this.coinsToSolve) {
+            this.removeCoins(coinsToRemove);
+            count++;
+            var player = this.players.find(function(player) { return player.name === lastOwner; });
+            player.score = player.score + count;
+            coinsToRemove = []; count = 0;
+        } else if (coin.owner == lastOwner || count == 0) {
+            coinsToRemove.push(coin);
+            lastOwner = coin.owner;
+            count++;
+            if ((j == this.height - 1 && coinsToRemove.length >= this.coinsToSolve)) {
+              this.removeCoins(coinsToRemove);
+              count++;
+              var player = this.players.find(function(player) { return player.name === lastOwner; });
+              player.score = player.score + count;
+              coinsToRemove = []; count = 0;
+            }
+        } else if (coin.owner != lastOwner) {
+          coinsToRemove = []; count = 1;
+          coinsToRemove.push(coin);
+          lastOwner = coin.owner;
+       }
+
+      }
     }
+  }
+
+  checkAllRowsForTermination() {
+    for (var i = 1; i < this.height; i++) {
+      let lastOwner = "";
+      let currentOwner = "";
+      let count = 0;
+      var coinsToRemove = [];
+      for (var j = 1; j < this.width; j++) {
+        // get coin on Position
+        let coin = this.getCoinByXY(j, i)[0];
+        // creat Dummy Coin if no coin exists
+        if (coin == undefined) {
+          if (count >= this.coinsToSolve) {
+            this.removeCoins(coinsToRemove);
+            count++;
+            var player = this.players.find(function(player) { return player.name === lastOwner; });
+            player.score = player.score + count;
+          }
+          coinsToRemove = []; count = 0;
+        } else if (coin.owner != lastOwner && count >= this.coinsToSolve) {
+            this.removeCoins(coinsToRemove);
+            count++;
+            var player = this.players.find(function(player) { return player.name === lastOwner; });
+            player.score = player.score + count;
+            coinsToRemove = []; count = 0;
+        } else if (coin.owner == lastOwner || count == 0) {
+            coinsToRemove.push(coin);
+            lastOwner = coin.owner;
+            count++;
+            if ((j == this.width - 1  && coinsToRemove.length >= this.coinsToSolve)) {
+              this.removeCoins(coinsToRemove);
+              count++;
+              var player = this.players.find(function(player) { return player.name === lastOwner; });
+              player.score = player.score + count;
+              coinsToRemove = []; count = 0;
+            }
+        } else if (coin.owner != lastOwner) {
+          coinsToRemove = []; count = 1;
+          coinsToRemove.push(coin);
+          lastOwner = coin.owner;
+       }
+
+      }
+    }
+  }
+
+  removeCoins(coinsToRemove) {
+    for (var i = 0; i < coinsToRemove.length; i++) {
+      // get index from coin array
+      var index = this.coins.findIndex(function(element) {
+        return element.id === coinsToRemove[i].id ;
+      });
+      // remove the coin
+      this.coins.splice(index, 1)
+    }
+  }
 
   // start the coin animation --- called from GameController on ngRepeatFinishedEvent
 	animate(unlockField, doneFn){
@@ -219,6 +320,8 @@ class Map {
     var line = this.getLineCoins(line, lastCoin.direction);
     this.moveLine(line, lastCoin.direction, doneFn);
 
+    //check for termination
+    // this.checkAllRowsForTermination();
     // undlock gamefield and force Readraw // Triggers to early
     unlockField();
 	}
