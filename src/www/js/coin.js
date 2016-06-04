@@ -3,8 +3,8 @@ class Coin {
   	this.id = id;
     this.x = x;
     this.y = y;
-    this.targetX;
-    this.targetY;
+    this.targetX = x;
+    this.targetY = y;
     this.owner = owner;
     this.color = 'red';
     this.direction;

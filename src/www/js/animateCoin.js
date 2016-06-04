@@ -12,7 +12,6 @@ function AnimateCircle(coin, steps, doneFn) {
 			translateY: movement+"px"
 		},500).then(function() {
       // set new position
-      debugger;
       if (coin.direction == "north") {
         coin.y = coin.y - steps;
       } else {
