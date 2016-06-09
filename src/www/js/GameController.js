@@ -1,9 +1,14 @@
 let map = new Map(6, 6, [new player('Bob', 0, 'red'), new player('Alice', 0, 'blue')]);
 app.controller('GameController', function ($scope, $state, $timeout, socket) {
   $scope.map = map;
+  $scope.playerName = "Your Name";
+  map.players[0].name = $scope.playerName;
+  map.players[1].name = "Bob" // oponent name
   var currentPlayer = map.players[0];
 	var coinCount=0;
   var lockField = false;
+  var turnCount=0;
+
 
     $scope.back = function () {
         console.log('hallo game');
@@ -14,6 +19,7 @@ app.controller('GameController', function ($scope, $state, $timeout, socket) {
     $scope.insertCoin = function(x, y) {
         console.log('insertCoin');
         coinCount++;
+        turnCount++;
 
         // only insert if allowed.
         if(lockField === false) {

@@ -12,6 +12,21 @@
             Play with friend
         </button>
     </div>
+    <div class="row row-center center" style="height:100px">
+      <form id="settings">
+          <fieldset class="center">
+              <legend>Gamesettings</legend>
+
+              <label for="name">Name:</label><input name="name" id="name" placeholder="yourname" value="{{playerName}}">
+              <br><br>
+              <label for="c2s">
+                  Coins 2 Solve:
+              </label><input name="c2s" id="c2s" placeholder="3" value="{{map.coinsToSolve}}">
+
+           </fieldset>
+      </form>
+    </div>
+    <br><br>
     <div class="row row-center" style="height:100px">
         <button class="button button-full button-transparent">
            {{usercount}} player online
