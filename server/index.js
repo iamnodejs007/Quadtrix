@@ -10,7 +10,7 @@ app.get('/', function(req, res) {
 var allClients = [];
 io.on('connection', function(socket){
   var updateUsersCount = function(){
-      io.emit('user count', {users:allClients.length});
+      io.emit('user.count', {users:allClients.length});
       console.log(allClients.length +" clients connected.");
   };
 
@@ -25,6 +25,11 @@ io.on('connection', function(socket){
       console.log('message: ' + msg);
       io.emit('chat message', msg); // send the message to everyone, including the sender
     });
+
+    socket.on('player.turn', function( msg){
+        console.log('message: ' + JSON.stringify(msg));
+        //io.emit('chat message', msg); // send the message to everyone, including the sender
+      });
 
   socket.on('disconnect', function(){
     console.log('user with id '+socket.id+' disconnected');
