@@ -57,7 +57,7 @@ app.controller('GameController', function ($scope, $state, $timeout, socket) {
         lockField = false;
         $scope.map.checkAllRowsForTermination();
         $scope.map.checkAllCollsForTermination();
-      }, 1000);},
+      }, 500);},
       // animation Timeout and Redraw.
       function(){$timeout(function(){},0);}
     );
