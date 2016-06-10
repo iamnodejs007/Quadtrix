@@ -1,10 +1,10 @@
 class Map {
-    constructor(w, h, players) {
+    constructor(w, h, you, oponent) {
     this.height = h;
     this.width = w;
     this.coins = [];
     this.coinCount = 0;
-    this.players = players;
+    this.players = { you: you, oponent: oponent }
     this.coinsToSolve = 3;
     }
 
@@ -34,13 +34,6 @@ class Map {
      // TODO: [x]  Line is FUll Block
      // TODO: [x] Block Interaction during Animation // fieldLock gets called to early :/
      // TODO: [ ] Block Interaction during enemy player Turn
-     if (this.coins.length % 2 == 0) {
-       coin.color = this.players[0].color;
-       coin.owner = this.players[0].name;
-     } else {
-       coin.color = this.players[1].color;
-       coin.owner = this.players[1].name;
-     }
 
 
       if (!((coin.x == 0 && coin.y == 0) ||
@@ -191,39 +184,43 @@ class Map {
       return hasMoveables;
     }
 
-  checkAllCollsForTermination() {
+  // Input "row" to check row lines otherwise it will check column lines
+  checkForTermination(checkRowOrColumn) {
     for (var i = 1; i < this.width; i++) {
       let lastOwner = "";
       let currentOwner = "";
       let count = 0;
       var coinsToRemove = [];
+      let coin;
       for (var j = 1; j < this.height; j++) {
         // get coin on Position
-        let coin = this.getCoinByXY(i, j)[0];
-        // creat Dummy Coin if no coin exists
+        if (checkRowOrColumn == "rows") {
+          coin = this.getCoinByXY(i, j)[0];
+        } else { // check Columns.
+          coin = this.getCoinByXY(j, i)[0];
+        }
+
+        // if no coin exists
         if (coin == undefined) {
           if (count >= this.coinsToSolve) {
-            this.removeCoins(coinsToRemove);
             count++;
-            var player = this.players.find(function(player) { return player.name === lastOwner; });
-            player.score = player.score + count;
+            this.removeCoins(coinsToRemove);
+            this.addScroreToPlayer(lastOwner, count);
           }
           coinsToRemove = []; count = 0;
         } else if (coin.owner != lastOwner && count >= this.coinsToSolve) {
+          count++;
             this.removeCoins(coinsToRemove);
-            count++;
-            var player = this.players.find(function(player) { return player.name === lastOwner; });
-            player.score = player.score + count;
+            this.addScroreToPlayer(lastOwner, count);
             coinsToRemove = []; count = 0;
         } else if (coin.owner == lastOwner || count == 0) {
-            coinsToRemove.push(coin);
-            lastOwner = coin.owner;
             count++;
+            lastOwner = coin.owner;
+            coinsToRemove.push(coin);
             if ((j == this.height - 1 && coinsToRemove.length >= this.coinsToSolve)) {
-              this.removeCoins(coinsToRemove);
               count++;
-              var player = this.players.find(function(player) { return player.name === lastOwner; });
-              player.score = player.score + count;
+              this.removeCoins(coinsToRemove);
+              this.addScroreToPlayer(lastOwner, count);
               coinsToRemove = []; count = 0;
             }
         } else if (coin.owner != lastOwner) {
@@ -236,51 +233,15 @@ class Map {
     }
   }
 
-  checkAllRowsForTermination() {
-    for (var i = 1; i < this.height; i++) {
-      let lastOwner = "";
-      let currentOwner = "";
-      let count = 0;
-      var coinsToRemove = [];
-      for (var j = 1; j < this.width; j++) {
-        // get coin on Position
-        let coin = this.getCoinByXY(j, i)[0];
-        // creat Dummy Coin if no coin exists
-        if (coin == undefined) {
-          if (count >= this.coinsToSolve) {
-            this.removeCoins(coinsToRemove);
-            count++;
-            var player = this.players.find(function(player) { return player.name === lastOwner; });
-            player.score = player.score + count;
-          }
-          coinsToRemove = []; count = 0;
-        } else if (coin.owner != lastOwner && count >= this.coinsToSolve) {
-            this.removeCoins(coinsToRemove);
-            count++;
-            var player = this.players.find(function(player) { return player.name === lastOwner; });
-            player.score = player.score + count;
-            coinsToRemove = []; count = 0;
-        } else if (coin.owner == lastOwner || count == 0) {
-            coinsToRemove.push(coin);
-            lastOwner = coin.owner;
-            count++;
-            if ((j == this.width - 1  && coinsToRemove.length >= this.coinsToSolve)) {
-              this.removeCoins(coinsToRemove);
-              count++;
-              var player = this.players.find(function(player) { return player.name === lastOwner; });
-              player.score = player.score + count;
-              coinsToRemove = []; count = 0;
-            }
-        } else if (coin.owner != lastOwner) {
-          coinsToRemove = []; count = 1;
-          coinsToRemove.push(coin);
-          lastOwner = coin.owner;
-       }
-
-      }
+  addScroreToPlayer(playerName, score) {
+    if (playerName == this.players.you) {
+      this.players.you.score += score;
+    } else {
+      this.players.oponent.score += score;
     }
   }
 
+  // remove coins from map object.
   removeCoins(coinsToRemove) {
     for (var i = 0; i < coinsToRemove.length; i++) {
       // get index from coin array
