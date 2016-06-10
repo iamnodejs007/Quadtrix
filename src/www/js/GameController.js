@@ -1,8 +1,10 @@
-let map = new Map(6, 6, new player('Bob', 0, 'red'), new player('Alice', 0, 'blue'));
-app.controller('GameController', function ($scope, $state, $timeout, socket) {
-  $scope.map = map;
-  map.players.you.name = "Your Name";
-  map.players.oponent.name = "Bob" // oponent name
+
+app.controller('GameController', function ($scope, $state, $timeout, socket, SessionService) {
+  var m = new Map(6, 6, new player('Bob', 0, 'red'), new player('Alice', 0, 'blue'));
+  $scope.map = m;
+  $scope.map.players.you.name = SessionService.name;
+  $scope.map.coinsToSolve = SessionService.coinsToSolve;
+  $scope.map.players.oponent.name = "Alice" // oponent name
   var currentPlayer;
 	var coinCount = 0;
   var lockField = false;
@@ -25,14 +27,17 @@ app.controller('GameController', function ($scope, $state, $timeout, socket) {
           turnCount++;
           // switch player
           if (turnCount % 2 == 0) {
-            currentPlayer = map.players.oponent;
+            currentPlayer = $scope.map.players.oponent;
             console.log("oponent");
           } else {
             console.log("me");
-            currentPlayer = map.players.you;
+            currentPlayer = $scope.map.players.you;
           }
 
-          $scope.map.applyCoin(new Coin(x, y, currentPlayer.name, coinCount, currentPlayer.color), function(){ lockField = false; });
+          $scope.map.applyCoin(
+            new Coin(x, y, currentPlayer.name, coinCount, currentPlayer.color),
+            function(){ lockField = false; }
+          );
 
         }
 

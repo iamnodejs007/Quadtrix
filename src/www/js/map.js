@@ -43,7 +43,7 @@ class Map {
       ) {
         if (coin.x == 0) {
             coin.direction = 'east';
-            coin.x = 1; coin.targetX = 1;
+            coin.x = 0; coin.targetX = 0;
             // only push if there is space forit
             if(this.getLineCoins(coin.y, coin.direction).length != this.width - 1) {
               this.coins.push(coin);
@@ -53,7 +53,7 @@ class Map {
         }
         if (coin.y == 0) {
             coin.direction = 'south';
-            coin.y = 1; coin.targetY = 1;
+            coin.y = 0; coin.targetY = 0;
             if(this.getLineCoins(coin.x, coin.direction).length != this.height - 1) {
               this.coins.push(coin);
             } else {
@@ -62,7 +62,7 @@ class Map {
         }
         if (coin.x == this.width) {
            coin.direction = 'west';
-           coin.x = this.width - 1; coin.targetX = this.width - 1;
+           coin.x = this.width; coin.targetX = this.width;
            if(this.getLineCoins(coin.y, coin.direction).length != this.width - 1) {
              this.coins.push(coin);
            } else {
@@ -71,7 +71,7 @@ class Map {
         }
         if (coin.y == this.height) {
           coin.direction = 'north';
-          coin.y = this.height - 1; coin.targetY =  this.height - 1;
+          coin.y = this.height; coin.targetY =  this.height;
           if(this.getLineCoins(coin.x, coin.direction).length != this.height - 1) {
             this.coins.push(coin);
           } else {
@@ -111,7 +111,6 @@ class Map {
         } else if (this.coins[i].y != this.coins[i].targetY) {
           dist = this.coins[i].targetY - this.coins[i].y
         }
-
         AnimateCircle(this.coins[i], Math.abs(dist), doneFn);
       }
     }
