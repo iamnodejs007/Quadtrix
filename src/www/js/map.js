@@ -103,7 +103,6 @@ class Map {
       // target direction until no moveable element is left.
       this.isMoveable(coinsInLine, direction);
 
-
       for (var i = 0; i < this.coins.length; i++) {
         // calc destination
         var dist = 0;

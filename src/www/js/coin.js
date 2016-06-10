@@ -9,5 +9,6 @@ class Coin {
     this.color = color;
     this.direction;
     this.isMoveable = true;
+    this.opacity = 0;
     }
 }
