@@ -6,7 +6,6 @@ app.get('/', function(req, res) {
     res.sendfile('index.html');
 });
 
-
 var allClients = [];
 
 var player = []; // Waiting List of Users {name:xx, id:socketId}
@@ -20,15 +19,14 @@ io.on('connection', function(socket) {
         console.log(allClients.length + " clients connected.");
     };
 
+    function getSocketById(id)
+    {
+      return allClients.filter(x => x.id === id).pop()
+    }
+
     console.log('a user connected with id ' + socket.id);
     allClients.push(socket);
     updateUsersCount();
-
-    //todo: join player
-    //todo: transmit move
-
-    //io.emit('chat message', msg); // send the message to every one, including the sender
-    // io.sockets.socket(savedSocketId).emit(...) // send message to single user
 
     socket.on('match.request', function(msg) {
         var newPlayer = {name: msg.name, id : socket.id};
@@ -39,21 +37,44 @@ io.on('connection', function(socket) {
           var oppenent = player.shift(); // fifo from the waiting line
           var newGame = {playerA: newPlayer, playerB : oppenent};
           games.push(newGame);
-          io.sockets.socket(newPlayer.id).emit("match.found", newGame );
-          io.sockets.socket(oppenent.id).emit("match.found", newGame );
+          getSocketById(newPlayer.id).emit("match.found", newGame );
+          getSocketById(oppenent.id).emit("match.found", newGame );
+          console.log("new game startet", JSON.stringify(newGame));
         }
         else {
           player.push(newPlayer);
         }
-
     });
 
+    socket.on('match.cancelrequest', function(msg) {
+      var i = player.findIndex(function(x){ return x.id === socket.id; });
+      player.splice(i, 1);
+      console.log("canceled request for id"+socket.id);
+    });
 
     socket.on('game.turn', function(msg) {
-        console.log('message: ' + JSON.stringify(msg));
-        //io.emit('chat message', msg); // send the message to everyone, including the sender
+      var game  = games.find(x => x.playerA.id === socket.id || x.playerB.id === socket.id);
+      if(game === undefined)
+        console.warn("no game for player "+socket.id+" found", JSON.stringify(msg));
+
+      var oppenent = game.playerA.id === socket.id ? game.playerB : game.playerA;
+
+      getSocketById(oppenent.id).emit("game.turn", msg);
+
+      console.log("game turn from "+socket.id + " to "+oppenent.id, JSON.stringify(msg));
     });
 
+
+    socket.on('game.exit', function(msg) {
+      var i = games.findIndex(x => x.playerA.id === socket.id || x.playerB.id === socket.id);
+
+      var game = games.splice(i, 1)[0];
+
+      getSocketById(game.playerA.id).emit("game.exit", "kthxbye");
+      getSocketById(game.playerB.id).emit("game.exit", "kthxbye");
+
+      console.log("game exit for id"+socket.id);
+    });
 
     socket.on('chat message', function(msg) {
         console.log('message: ' + msg);
@@ -66,11 +87,22 @@ io.on('connection', function(socket) {
         var i = allClients.indexOf(socket);
         allClients.splice(i, 1);
 
-        //remove from player and games
+        i = player.findIndex(function(x){ return x.id === socket.id; });
+        if(i !== -1){
+           player.splice(i, 1);
+        }
+
+        i = games.findIndex(x => x.playerA.id === socket.id || x.playerB.id === socket.id);
+        if(i !== -1){
+          var game = games.splice(i, 1)[0];
+          var oppenent = game.playerA.id === socket.id ? game.playerB : game.playerA;
+          getSocketById(oppenent.id).emit("game.exit", "oppenent disconnected");
+          console.warn("player " + socket.id +"got disconnected from a running game");
+        }
+
         updateUsersCount();
     });
 });
-
 
 http.listen(process.env.PORT || 3000, function() {
     console.log('listening on *:' + (process.env.PORT || 3000));
