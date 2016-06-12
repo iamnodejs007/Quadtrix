@@ -23,9 +23,9 @@ app.controller('StartController', function($scope, $state, socket, SessionServic
 
   socket.on('match.found', function(message) {
     if (message.playerA.name === $scope.yourName) {
-      SessionService.attachUser(message.playerA.id, $scope.yourName, $scope.coinsToSolve, message.playerB.name);
+      SessionService.attachUser(message.playerA.id, $scope.yourName, $scope.coinsToSolve, message.playerB.name, message.playerA.name);
     } else {
-      SessionService.attachUser(message.playerB.id, $scope.yourName, $scope.coinsToSolve, message.playerA.name);
+      SessionService.attachUser(message.playerB.id, $scope.yourName, $scope.coinsToSolve, message.playerA.name, message.playerA.name);
     }
       $state.go('game');
   })
@@ -33,6 +33,6 @@ app.controller('StartController', function($scope, $state, socket, SessionServic
 
   // on settingschange push it to the SessionService
   $scope.change = function() {
-       SessionService.attachUser(userId, $scope.yourName, $scope.coinsToSolve, "Bob");
+       SessionService.attachUser(userId, $scope.yourName, $scope.coinsToSolve, "Bob", $scope.yourName);
   };
 });

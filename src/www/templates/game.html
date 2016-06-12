@@ -7,7 +7,8 @@
              <rect style="stroke: none; fill: url(#borderGradient);" x="0" y="0" width="40" height="40"></rect>
              <path d="M383.6,322.7L278.6,423c-5.8,6-13.7,9-22.4,9c-8.7,0-16.5-3-22.4-9L128.4,322.7c-12.5-11.9-12.5-31.3,0-43.2
                      c12.5-11.9,32.7-11.9,45.2,0l50.4,48.2v-217c0-16.9,14.3-30.6,32-30.6c17.7,0,32,13.7,32,30.6v217l50.4-48.2
-                     c12.5-11.9,32.7-11.9,45.2,0C396.1,291.4,396.1,310.7,383.6,322.7z" transform="scale(0.08,0.08)" id ="arrowpath" class="arrow" ></path>
+                     c12.5-11.9,32.7-11.9,45.2,0C396.1,291.4,396.1,310.7,383.6,322.7z" transform="scale(0.08,0.08)" id ="arrowpath" class="arrow"
+                     style="fill: {{map.currentPlayer.color}};"></path>
            </pattern>
            <radialGradient id="blueCoinGradient"
               fx="5%" fy="5%" r="65%"
@@ -40,10 +41,10 @@
                         style="fill:url(#{{coin.color}}CoinGradient);" opacity={{coin.opacity}} stroke-width="0.5" fill="{{coin.color}}" id="{{coin.id}}" on-finish-render></circle>
             </g>
 			      <g ng-repeat="z in [1, 2, 3, 4, 5]">
-              <rect class="arrow-down" ng-attr-x="{{z * 40}}" y="0" width="40" height="40" fill="url(#pat)" ng-click="insertCoin(z,0)"></rect>
-              <rect class="arrow-right" x="0" ng-attr-y="{{z * 40}}" width="40" height="40" fill="url(#pat)" ng-click="insertCoin(0,z)"></rect>
-              <rect class="arrow-left" x="240" ng-attr-y="{{z * 40}}" width="40" height="40" fill="url(#pat)" ng-click="insertCoin(6,z)"></rect>
-              <rect class="arrow-up" ng-attr-x="{{z * 40}}" y="240" width="40" height="40" fill="url(#pat)" ng-click="insertCoin(z,6)"></rect>
+              <rect class="arrow-down" ng-attr-x="{{z * 40}}" y="0" width="40" height="40" fill="url(#pat)" ng-click="insertCoinOnClick(z,0)"></rect>
+              <rect class="arrow-right" x="0" ng-attr-y="{{z * 40}}" width="40" height="40" fill="url(#pat)" ng-click="insertCoinOnClick(0,z)"></rect>
+              <rect class="arrow-left" x="240" ng-attr-y="{{z * 40}}" width="40" height="40" fill="url(#pat)" ng-click="insertCoinOnClick(6,z)"></rect>
+              <rect class="arrow-up" ng-attr-x="{{z * 40}}" y="240" width="40" height="40" fill="url(#pat)" ng-click="insertCoinOnClick(z,6)"></rect>
             </g>
         </svg>
           <br>  <br>

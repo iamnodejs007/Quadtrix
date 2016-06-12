@@ -29,13 +29,13 @@ class Map {
       })
     }
 
-    applyCoin(coin, unlockField) { // 6 und 2
+    applyCoin(coin) { // 6 und 2
       // coin id to find coin in array
      // TODO: [x]  Line is FUll Block
      // TODO: [x] Block Interaction during Animation // fieldLock gets called to early :/
      // TODO: [ ] Block Interaction during enemy player Turn
 
-
+     //did the user user click on the arrows?
       if (!((coin.x == 0 && coin.y == 0) ||
           (coin.x == 0 && coin.y == this.height) ||
           (coin.x == this.width && coin.y == 0) ||
@@ -48,7 +48,7 @@ class Map {
             if(this.getLineCoins(coin.y, coin.direction).length != this.width - 1) {
               this.coins.push(coin);
             } else {
-              unlockField();
+              return false;
             }
         }
         if (coin.y == 0) {
@@ -57,7 +57,7 @@ class Map {
             if(this.getLineCoins(coin.x, coin.direction).length != this.height - 1) {
               this.coins.push(coin);
             } else {
-              unlockField();
+              return false;
             }
         }
         if (coin.x == this.width) {
@@ -66,7 +66,7 @@ class Map {
            if(this.getLineCoins(coin.y, coin.direction).length != this.width - 1) {
              this.coins.push(coin);
            } else {
-             unlockField();
+             return false;
            }
         }
         if (coin.y == this.height) {
@@ -75,10 +75,12 @@ class Map {
           if(this.getLineCoins(coin.x, coin.direction).length != this.height - 1) {
             this.coins.push(coin);
           } else {
-            unlockField();
+            return false;
           }
         }
+        return true;
       }
+      return false;
     }
 
     // returns all coins in line

@@ -4,15 +4,17 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
   $scope.map = map;
   $scope.map.players.you.name = SessionService.name;
   $scope.map.coinsToSolve = SessionService.coinsToSolve;
-  $scope.map.players.opponent.name = SessionService.opponent; // opponent name
-  var currentPlayer;
-	var coinCount = 0;
+  if (SessionService.opponent != undefined) {
+    $scope.map.players.opponent.name = SessionService.opponent; // oponent name
+  }
   var lockField = false;
+  if (SessionService.beginner != undefined) {
+    if (SessionService.beginner != $scope.map.players.you.name) {
+      lockField = true;
+    }
+  }
+	var coinCount = 0;
   var turnCount = 0;
-  new Timer();
-
-
-
 
     $scope.back = function () {
         console.log('hallo game');
@@ -20,49 +22,54 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
         $state.go('start');
     };
 
-    $scope.insertCoin = function(x, y) {
-        console.log('insertCoin');
+    socket.on('game.turn', function(message) {
+      $scope.map.applyCoin(
+        new Coin(message.target.x,
+                message.target.y,
+                $scope.map.players.opponent.name,
+                message.turnNumber,
+                $scope.map.players.opponent.color)
+      );
+      turnCount = message.turnNumber;
+      coinCount = message.turnNumber;
+      changePlayer($scope.map.players.opponent.name, $scope.map.players.you.name);
+      lockField = false;
+    });
 
+    $scope.insertCoinOnClick = function(x, y) {
         // only insert if allowed.
         if(lockField === false) {
           lockField = true;
           coinCount++;
           turnCount++;
           // switch player
-          if (turnCount % 2 == 0) {
-            currentPlayer = map.players.opponent;
-            changePlayer(currentPlayer.name,map.players.you.name);
-          }
-          else {
-            currentPlayer = map.players.you;
-            changePlayer(currentPlayer.name,map.players.you.name);
-          }
-          $scope.map.applyCoin(
-            new Coin(x, y, currentPlayer.name, coinCount, currentPlayer.color),
-            function() {
-              lockField = false;
 
-            }
+          let inserted = $scope.map.applyCoin(
+            new Coin(x, y, $scope.map.players.you.name, coinCount, $scope.map.players.you.color)
           );
 
-
-
-
+          if (inserted) {
+            var turn = {
+              target: {
+                x: x,
+                y: y
+              },
+              direction: null,
+              turnNumber:turnCount,
+            };
+            socket.emit("game.turn", turn);
+            changePlayer($scope.map.players.opponent.name,map.players.you.name);
+          }
+          else {
+            lockField = false;
+            turnCount--;
+            coinCount--;
+            console.log('faild to insert');
+          }
         }
+      };
 
 
-        /*
-          sample code, send turn to server
-          var turn = {
-            target: {
-              x: 1,
-              y: 1
-            },
-            turnNumber:123,
-          };
-          socket.emit("player.turn", turn);
-        */
-    };
 
 	$scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
     /* black magic
@@ -77,7 +84,6 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
       // maybe not needed if we have player interaction where the game field is locked through
       // the enemy Turn anyways.
       function(){$timeout(function(){
-        lockField = false;
         $scope.map.checkForTermination("rows");
         $scope.map.checkForTermination("colls");
       }, 1000);},
@@ -85,5 +91,4 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
       function(){$timeout(function(){},0);}
     );
 	});
-
 });

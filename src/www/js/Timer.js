@@ -46,3 +46,5 @@ class Timer{
     }
   }
 }
+//make sure the ctor is called at least once
+new Timer();
