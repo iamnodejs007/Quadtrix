@@ -22,8 +22,6 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
 
     $scope.insertCoin = function(x, y) {
         console.log('insertCoin');
-        coinCount++;
-        turnCount++;
 
         // only insert if allowed.
         if(lockField === false) {
@@ -60,7 +58,6 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
               x: 1,
               y: 1
             },
-            direction: 4,
             turnNumber:123,
           };
           socket.emit("player.turn", turn);

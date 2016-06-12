@@ -1,7 +1,7 @@
 function changePlayer(currentPlayer,player1,timer) {
 
 
-  if (currentPlayer==player1) {
+  if (currentPlayer!=player1) {
 
     $(document.getElementById("red")).velocity({
       transformOrigin: "50% 50%"
@@ -35,37 +35,12 @@ function changePlayer(currentPlayer,player1,timer) {
       scale: 1.0
     },500);
   }
-  if (!timer.timerRdy) {
-    timer.stopTimer=true;
-    timer.startNewTimer=true;
+  if (!Timer.timerRdy) {
+    Timer.stopTimer=true;
+    Timer.startNewTimer=true;
   } else {
-    timer.timerRdy=false;
-    timer.countdown(10);
+    Timer.timerRdy=false;
+    Timer.countdown(10);
   }
 
-}
-
-class Timer{
-  constructor(){
-    this.stopTimer=false;
-    this.startNewTimer=false;
-    this.timerRdy=true;
-  }
-
-  countdown(time) {
-   time -= 1;
-   document.getElementById('optnumber').firstChild.nodeValue = time;
-   if (time > 0 && !this.stopTimer) {
-      setTimeout( this.countdown, 1000, time);
-   }
-   else {
-      this.stopTimer=false;
-      this.timerRdy = true;
-      if (this.startNewTimer) {
-        this.startNewTimer=false;
-        this.timerRdy = false;
-        this.countdown(10);
-      }
-    }
-  }
 }
