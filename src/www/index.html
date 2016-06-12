@@ -28,7 +28,9 @@
   <script src="lib/socket.io-client/socket.io.js"></script>
 
   <script src="js/app.js"></script>
-  <script src="js\SessionService.js"></script>
+  <script src="js/Timer.js"></script>
+  <script src="js/changePlayer.js"></script>
+  <script src="js/SessionService.js"></script>
   <script src="js/player.js"></script>
   <script src="js/services.js"></script>
 	<script src="js/animateCoin.js"></script>
@@ -38,12 +40,12 @@
   <script src="js/StartController.js"></script>
 </head>
 
-<body ng-app="app">
+<body class = "background" ng-app="app">
 
     <ion-nav-view name="content"></ion-nav-view>
 
 </body>
-
+<!--
 <script>
     function generateBackground() {
         var pattern = Trianglify({
@@ -68,7 +70,9 @@
     }
     /*set inital background*/
     generateBackground();
-
+  </script>
+-->
+<script>
     /*prevent scrolling on device*/
     window.addEventListener('load', function () {
         document.body.addEventListener('touchmove', function (e) {

@@ -4,7 +4,7 @@
   "proxies": [
    {
      "path": "/api",
-     "proxyUrl": "http://htwlessons.cloudapp.net:3000"
+     "proxyUrl": "http://192.168.178.28:3000"
    }
  ]
 }

@@ -8,9 +8,11 @@
         </a>
     </div>
     <div class="row row-center" style="height:100px">
+      <a href="#" class="center" ng-click="matchRequest()">
         <button class="button button-full button-transparent">
             Play with friend
         </button>
+      </a>
     </div>
     <div class="row row-center center" style="height:100px">
       <form id="settings">
@@ -33,4 +35,6 @@
            {{usercount}} player online
         </button>
     </div>
+    <div class="waitingForMatch animate-hide" ng-show="waitingForMatch"><h1>Waiting</h1></div>
+
 </ion-view>

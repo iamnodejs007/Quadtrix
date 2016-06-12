@@ -1,14 +1,17 @@
 
 app.controller('GameController', function ($scope, $state, $timeout, socket, SessionService) {
-  var m = new Map(6, 6, new player('Bob', 0, 'red'), new player('Alice', 0, 'blue'));
-  $scope.map = m;
+  var map = new Map(6, 6, new player('Bob', 0, 'red'), new player('Alice', 0, 'blue'));
+  $scope.map = map;
   $scope.map.players.you.name = SessionService.name;
   $scope.map.coinsToSolve = SessionService.coinsToSolve;
-  $scope.map.players.oponent.name = "Alice" // oponent name
+  $scope.map.players.opponent.name = SessionService.opponent; // opponent name
   var currentPlayer;
 	var coinCount = 0;
   var lockField = false;
   var turnCount = 0;
+  new Timer();
+
+
 
 
     $scope.back = function () {
@@ -19,8 +22,6 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
 
     $scope.insertCoin = function(x, y) {
         console.log('insertCoin');
-        coinCount++;
-        turnCount++;
 
         // only insert if allowed.
         if(lockField === false) {
@@ -29,19 +30,26 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
           turnCount++;
           // switch player
           if (turnCount % 2 == 0) {
-            currentPlayer = $scope.map.players.oponent;
-            console.log("oponent");
-          } else {
-            console.log("me");
-            currentPlayer = $scope.map.players.you;
+            currentPlayer = map.players.opponent;
+            changePlayer(currentPlayer.name,map.players.you.name);
           }
-
+          else {
+            currentPlayer = map.players.you;
+            changePlayer(currentPlayer.name,map.players.you.name);
+          }
           $scope.map.applyCoin(
             new Coin(x, y, currentPlayer.name, coinCount, currentPlayer.color),
-            function(){ lockField = false; }
+            function() {
+              lockField = false;
+
+            }
           );
 
+
+
+
         }
+
 
         /*
           sample code, send turn to server
@@ -50,7 +58,6 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
               x: 1,
               y: 1
             },
-            direction: 4,
             turnNumber:123,
           };
           socket.emit("player.turn", turn);

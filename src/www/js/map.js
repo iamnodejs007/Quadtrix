@@ -1,10 +1,10 @@
 class Map {
-    constructor(w, h, you, oponent) {
+    constructor(w, h, you, opponent) {
     this.height = h;
     this.width = w;
     this.coins = [];
     this.coinCount = 0;
-    this.players = { you: you, oponent: oponent }
+    this.players = { you: you, opponent: opponent }
     this.coinsToSolve = 3;
     }
 
@@ -235,7 +235,7 @@ class Map {
     if (playerName == this.players.you) {
       this.players.you.score += score;
     } else {
-      this.players.oponent.score += score;
+      this.players.opponent.score += score;
     }
   }
 
