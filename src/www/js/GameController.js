@@ -4,12 +4,12 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
   $scope.map = map;
   $scope.map.players.you.name = SessionService.name;
   $scope.map.coinsToSolve = SessionService.coinsToSolve;
-  $scope.map.players.oponent.name = SessionService.oponent; // oponent name
+  $scope.map.players.opponent.name = SessionService.opponent; // opponent name
   var currentPlayer;
 	var coinCount = 0;
   var lockField = false;
   var turnCount = 0;
-  var timer=new Timer();
+  new Timer();
 
 
 
@@ -31,11 +31,11 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
           // switch player
           if (turnCount % 2 == 0) {
             currentPlayer = map.players.opponent;
-            changePlayer(currentPlayer.name,map.players.you.name,timer);
+            changePlayer(currentPlayer.name,map.players.you.name);
           }
           else {
             currentPlayer = map.players.you;
-            changePlayer(currentPlayer.name,map.players.you.name,timer);
+            changePlayer(currentPlayer.name,map.players.you.name);
           }
           $scope.map.applyCoin(
             new Coin(x, y, currentPlayer.name, coinCount, currentPlayer.color),

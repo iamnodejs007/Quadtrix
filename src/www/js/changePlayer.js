@@ -1,4 +1,4 @@
-function changePlayer(currentPlayer,player1,timer) {
+function changePlayer(currentPlayer,player1) {
 
 
   if (currentPlayer!=player1) {
