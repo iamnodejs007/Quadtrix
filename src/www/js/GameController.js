@@ -4,12 +4,13 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
   $scope.map = map;
   $scope.map.players.you.name = SessionService.name;
   $scope.map.coinsToSolve = SessionService.coinsToSolve;
-  $scope.map.players.opponent.name = "Alice" // oponent name
+  $scope.map.players.oponent.name = SessionService.oponent; // oponent name
   var currentPlayer;
 	var coinCount = 0;
   var lockField = false;
   var turnCount = 0;
   var timer=new Timer();
+
 
 
 
