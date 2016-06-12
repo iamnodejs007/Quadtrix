@@ -234,7 +234,7 @@ class Map {
   }
 
   addScroreToPlayer(playerName, score) {
-    if (playerName == this.players.you) {
+    if (playerName == this.players.you.name) {
       this.players.you.score += score;
     } else {
       this.players.opponent.score += score;

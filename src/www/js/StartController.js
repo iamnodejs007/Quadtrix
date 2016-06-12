@@ -10,7 +10,7 @@ app.controller('StartController', function($scope, $state, socket, SessionServic
   });
 
   $scope.matchRequest = function() {
-      var message = { name: $scope.yourName };
+      var message = { name: $scope.yourName, coinsToSolve: $scope.coinsToSolve };
       socket.emit("match.request", message);
       $scope.waitingForMatch = true;
 
@@ -27,7 +27,8 @@ app.controller('StartController', function($scope, $state, socket, SessionServic
     } else {
       SessionService.attachUser(message.playerB.id, $scope.yourName, $scope.coinsToSolve, message.playerA.name, message.playerA.name);
     }
-      $state.go('game');
+    $scope.coinsToSolve = message.coinsToSolve;
+    $state.go('game');
   })
 
 
