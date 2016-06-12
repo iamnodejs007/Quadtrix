@@ -1,13 +1,14 @@
-let map = new Map(6, 6, [new player('Bob', 0, 'red'), new player('Alice', 0, 'blue')]);
-app.controller('GameController', function ($scope, $state, $timeout, socket) {
-  $scope.map = map;
-  $scope.playerName = "Your Name";
-  map.players[0].name = $scope.playerName;
-  map.players[1].name = "Bob" // oponent name
-  var currentPlayer = map.players[0];
-	var coinCount=0;
+
+app.controller('GameController', function ($scope, $state, $timeout, socket, SessionService) {
+  var m = new Map(6, 6, new player('Bob', 0, 'red'), new player('Alice', 0, 'blue'));
+  $scope.map = m;
+  $scope.map.players.you.name = SessionService.name;
+  $scope.map.coinsToSolve = SessionService.coinsToSolve;
+  $scope.map.players.oponent.name = "Alice" // oponent name
+  var currentPlayer;
+	var coinCount = 0;
   var lockField = false;
-  var turnCount=0;
+  var turnCount = 0;
 
 
     $scope.back = function () {
@@ -24,7 +25,22 @@ app.controller('GameController', function ($scope, $state, $timeout, socket) {
         // only insert if allowed.
         if(lockField === false) {
           lockField = true;
-          $scope.map.applyCoin(new Coin(x, y, 'me', coinCount), function(){ lockField = false; });
+          coinCount++;
+          turnCount++;
+          // switch player
+          if (turnCount % 2 == 0) {
+            currentPlayer = $scope.map.players.oponent;
+            console.log("oponent");
+          } else {
+            console.log("me");
+            currentPlayer = $scope.map.players.you;
+          }
+
+          $scope.map.applyCoin(
+            new Coin(x, y, currentPlayer.name, coinCount, currentPlayer.color),
+            function(){ lockField = false; }
+          );
+
         }
 
         /*
@@ -55,9 +71,9 @@ app.controller('GameController', function ($scope, $state, $timeout, socket) {
       // the enemy Turn anyways.
       function(){$timeout(function(){
         lockField = false;
-        $scope.map.checkAllRowsForTermination();
-        $scope.map.checkAllCollsForTermination();
-      }, 500);},
+        $scope.map.checkForTermination("rows");
+        $scope.map.checkForTermination("colls");
+      }, 1000);},
       // animation Timeout and Redraw.
       function(){$timeout(function(){},0);}
     );

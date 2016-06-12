@@ -6,9 +6,17 @@
 .arrow-down{
 
 }
+.arrow-down:hover{
+  transform: translateY(-20px);
+}
 
 .arrow-right{
   transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.arrow-right:hover{
+  transform: rotate(-90deg) translateY(-20px);
   transform-origin: 50% 50%;
 }
 
@@ -16,8 +24,16 @@
   transform: rotate(90deg);
   transform-origin: 50% 50%;
 }
+.arrow-left:hover{
+  transform: rotate(90deg) translateY(-20px);
+  transform-origin: 50% 50%;
+}
 
 .arrow-up{
   transform: rotate(180deg);
+  transform-origin: 50% 50%;
+}
+.arrow-up:hover{
+  transform: rotate(180deg) translateY(-20px);;
   transform-origin: 50% 50%;
 }
