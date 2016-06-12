@@ -1,5 +1,9 @@
-/* Empty. Add your own CSS if you like */
-
+@media screen and (orientation:portrait) {
+    /*portrait only*/
+}
+@media screen and (orientation:landscape) {
+    /*landscape only*/
+}
 body {
     top: 0;
     left: 0;
@@ -26,16 +30,15 @@ div {
 
 #right {
 width: 50%;
-float:left;
+float:right;
 text-align: center;
 
 }
 #left {
 width: 50%;
-float: right;
+float: left;
 text-align: center;
 }
-
 
 .bar {
     background-color: transparent;

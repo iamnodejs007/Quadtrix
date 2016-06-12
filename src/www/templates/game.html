@@ -7,7 +7,7 @@
              <rect style="stroke: none; fill: url(#borderGradient);" x="0" y="0" width="40" height="40"></rect>
              <path d="M383.6,322.7L278.6,423c-5.8,6-13.7,9-22.4,9c-8.7,0-16.5-3-22.4-9L128.4,322.7c-12.5-11.9-12.5-31.3,0-43.2
                      c12.5-11.9,32.7-11.9,45.2,0l50.4,48.2v-217c0-16.9,14.3-30.6,32-30.6c17.7,0,32,13.7,32,30.6v217l50.4-48.2
-                     c12.5-11.9,32.7-11.9,45.2,0C396.1,291.4,396.1,310.7,383.6,322.7z" transform="scale(0.08,0.08)" class="arrow" ></path>
+                     c12.5-11.9,32.7-11.9,45.2,0C396.1,291.4,396.1,310.7,383.6,322.7z" transform="scale(0.08,0.08)" id ="arrowpath" class="arrow" ></path>
            </pattern>
            <radialGradient id="blueCoinGradient"
               fx="5%" fy="5%" r="65%"
@@ -50,58 +50,61 @@
         <svg viewBox="0 0 100 100" width="100" height="100" style="display:block;margin:auto;">
 			     <circle id="optcircle" cx="50" cy="50" r="45" fill="white" stroke="hsl(390,85%,60%)" stroke-width="10"></circle>
 			     <text id="optnumber" x="35" y="65" fill="hsl(390,85%,60%)" font-size="50">0</text>
-           <!-- Sample Function to animate Timer:
-
-           var optcounter = document.getElementById('optdown');
-            var optnumber = document.getElementById('optnumber');
-            var optcircle = document.getElementById('optcircle');
-
-            startbutton.onclick =
-            counter.onclick = function () {
-               function countdown (time,hue) {
-                  time -= 1;
-                  hue += 60;
-                  number.firstChild.nodeValue = time;
-                  optcircle.setAttribute('stroke','hsl(' + hue + ',85%,60%)');
-                  optnumber.setAttribute('fill','hsl(' + hue + ',85%,60%)');
-                  if (time > 0) {
-                     setTimeout( countdown, 1000, time, hue);
-                  }
-               }
-               countdown(6, 30);
-            }-->
 		    </svg>
         <div id="behold">
-          <div id="right" ng-repeat="player in map.getPlayers()" style="text-align: center;">
-            <svg viewBox="0 0 150 150" width="150" height="150" style="display:block;margin:auto;">
-              <defs>
-               <pattern id="person" x="0" y="0" width="150" height="150" viewBox="0 0 150 150" patternUnits="userSpaceOnUse">
-                 <radialGradient id="blueCoinGradient"
-                   fx="5%" fy="5%" r="65%"
-                   spreadMethod="pad">
-                   <stop offset="0%"   stop-color="#ffffff" stop-opacity="1"/>
-                   <stop offset="100%" stop-color="#0066cc" stop-opacity="1" />
-                 </radialGradient>
-                 <radialGradient id="redCoinGradient"
-                   fx="5%" fy="5%" r="65%"
-                   spreadMethod="pad">
-                   <stop offset="0%"   stop-color="#ffffff" stop-opacity="1"/>
-                   <stop offset="100%" stop-color="#cc3300" stop-opacity="1" />
-                 </radialGradient>
-                 <path d="M448,448c0,0,0-26.4-2.2-40.2c-1.8-10.9-16.9-25.3-81.1-48.9c-63.2-23.2-59.3-11.9-59.3-54.6c0-27.7,14.1-11.6,23.1-64.2
-                          c3.5-20.7,6.3-6.9,13.9-40.1c4-17.4-2.7-18.7-1.9-27c0.8-8.3,1.6-15.7,3.1-32.7C345.4,119.3,325.9,64,256,64
-                          c-69.9,0-89.4,55.3-87.5,76.4c1.5,16.9,2.3,24.4,3.1,32.7c0.8,8.3-5.9,9.6-1.9,27c7.6,33.1,10.4,19.3,13.9,40.1
-                          c9,52.6,23.1,36.5,23.1,64.2c0,42.8,3.9,31.5-59.3,54.6c-64.2,23.5-79.4,38-81.1,48.9C64,421.6,64,448,64,448h192H448z"
-                          transform="scale(0.25,0.25)" style="fill:url(#{{player.color}}CoinGradient)"></path>
-                </defs>
-               <rect class="person" x="0" y="0" width="150" height="150" fill="url(#person)"></rect>
-            </svg>
-            <p style="color: #444; font-size: 18px; text-align: center;
-                      position: relative; height: auto; width: 150px;
-                      top: -115px; left: -8px;">{{player.score}}
-                      <br><br>{{player.name}}
+              <div id="left" style="text-align: center;">
+                <svg viewBox="0 0 150 150" width="150" height="150" style="display:block;margin:auto;">
+                  <defs>
+                   <pattern id="personred" x="0" y="0" width="150" height="150" viewBox="0 0 150 150" patternUnits="userSpaceOnUse">
+                     <radialGradient id="redCoinGradient"
+                       fx="5%" fy="5%" r="65%"
+                       spreadMethod="pad">
+                       <stop offset="0%"   stop-color="#ffffff" stop-opacity="1"/>
+                       <stop offset="100%" stop-color="#cc3300" stop-opacity="1" />
+                     </radialGradient>
+                     <path d="M448,448c0,0,0-26.4-2.2-40.2c-1.8-10.9-16.9-25.3-81.1-48.9c-63.2-23.2-59.3-11.9-59.3-54.6c0-27.7,14.1-11.6,23.1-64.2
+                              c3.5-20.7,6.3-6.9,13.9-40.1c4-17.4-2.7-18.7-1.9-27c0.8-8.3,1.6-15.7,3.1-32.7C345.4,119.3,325.9,64,256,64
+                              c-69.9,0-89.4,55.3-87.5,76.4c1.5,16.9,2.3,24.4,3.1,32.7c0.8,8.3-5.9,9.6-1.9,27c7.6,33.1,10.4,19.3,13.9,40.1
+                              c9,52.6,23.1,36.5,23.1,64.2c0,42.8,3.9,31.5-59.3,54.6c-64.2,23.5-79.4,38-81.1,48.9C64,421.6,64,448,64,448h192H448z"
+                              transform="scale(0.25,0.25)" style="fill:url(#redCoinGradient)"></path>
+                    </defs>
+                   <rect id="red" class="" x="0" y="0" width="150" height="150" fill="url(#personred)" ></rect>
+                   <p style="color: #444; font-size: 18px; text-align: center;
+                             position: relative; height: auto; width: 150px;
+                             top: -115px; left: -8px;">{{map.players.you.score}}
+                                     <br>  <br>{{map.players.you.name}}
 
-            </p>
+                   </p>
+                </svg>
+              </div>
+              <div id="right" style="text-align: center;">
+                  <svg viewBox="0 0 150 150" width="150" height="150" style="display:block;margin:auto;">
+                    <defs>
+                     <pattern id="personblue" x="0" y="0" width="150" height="150" viewBox="0 0 150 150" patternUnits="userSpaceOnUse">
+                       <radialGradient id="blueCoinGradient"
+                         fx="5%" fy="5%" r="65%"
+                         spreadMethod="pad">
+                         <stop offset="0%"   stop-color="#ffffff" stop-opacity="1"/>
+                         <stop offset="100%" stop-color="#0066cc" stop-opacity="1" />
+                       </radialGradient>
+                       <path id="figur" d="M448,448c0,0,0-26.4-2.2-40.2c-1.8-10.9-16.9-25.3-81.1-48.9c-63.2-23.2-59.3-11.9-59.3-54.6c0-27.7,14.1-11.6,23.1-64.2
+                                c3.5-20.7,6.3-6.9,13.9-40.1c4-17.4-2.7-18.7-1.9-27c0.8-8.3,1.6-15.7,3.1-32.7C345.4,119.3,325.9,64,256,64
+                                c-69.9,0-89.4,55.3-87.5,76.4c1.5,16.9,2.3,24.4,3.1,32.7c0.8,8.3-5.9,9.6-1.9,27c7.6,33.1,10.4,19.3,13.9,40.1
+                                c9,52.6,23.1,36.5,23.1,64.2c0,42.8,3.9,31.5-59.3,54.6c-64.2,23.5-79.4,38-81.1,48.9C64,421.6,64,448,64,448h192H448z"
+                                transform="scale(0.25,0.25)" style="fill:url(#blueCoinGradient)"></path>
+                      </defs>
+                     <rect id="blue" class="" x="0" y="0" width="150" height="150" fill="url(#personblue)" ></rect>
+
+                  </svg>
+
+                <p style="color: #444; font-size: 18px; text-align: center;
+                          position: relative; height: auto; width: 150px;
+                          top: -115px; left: -8px;">{{map.players.opponent.score}}
+                                  <br>  <br>{{map.players.opponent.name}}
+
+                </p>
+              </div>
+            </div>
           </div>
         </div>
         <!--  Mrko: brauchen wir den ?
