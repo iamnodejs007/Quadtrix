@@ -17,7 +17,7 @@ var message = {}
 ## Server: match.found
 Opponent found. Starts the game.
 ```
-var message = { oppenent: "Bob" }
+var message = { playerA: "Bob", playerB:"Alice" }
 ```
 
 ## Client/Server: game.turn
