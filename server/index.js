@@ -35,7 +35,7 @@ io.on('connection', function(socket) {
         if(player.length > 0)
         {
           var oppenent = player.shift(); // fifo from the waiting line
-          var newGame = {playerA: newPlayer, playerB : oppenent};
+          var newGame = {playerA: newPlayer, playerB : oppenent, coinsToSolve: msg.coinsToSolve };
           games.push(newGame);
           getSocketById(newPlayer.id).emit("match.found", newGame );
           getSocketById(oppenent.id).emit("match.found", newGame );
