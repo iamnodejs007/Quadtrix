@@ -4,6 +4,7 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
   $scope.map = map;
   $scope.map.players.you.name = SessionService.name;
   $scope.map.coinsToSolve = SessionService.coinsToSolve;
+  $scope.map.startColor;
   if (SessionService.opponent != undefined) {
     $scope.map.players.opponent.name = SessionService.opponent; // oponent name
   }
@@ -11,7 +12,10 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
   if (SessionService.beginner != undefined) {
     if (SessionService.beginner != $scope.map.players.you.name) {
       lockField = true;
+      $scope.map.startColor = "blue";
     }
+    else
+      $scope.map.startColor = "red";
   }
 	var coinCount = 0;
   var turnCount = 0;
@@ -32,7 +36,7 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
       );
       turnCount = message.turnNumber;
       coinCount = message.turnNumber;
-      changePlayer($scope.map.players.opponent.name, $scope.map.players.you.name);
+      changePlayer($scope.map.players.you.name, $scope.map.players.you.name);
       lockField = false;
     });
 

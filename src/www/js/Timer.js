@@ -31,7 +31,6 @@ class Timer{
   static countdown(time) {
    time -= 1;
    document.getElementById('optnumber').firstChild.nodeValue = time;
-   console.log(time + " "+Timer.stopTimer);
    if (time > 0 && !Timer.stopTimer) {
       setTimeout( Timer.countdown, 1000, time);
    }
