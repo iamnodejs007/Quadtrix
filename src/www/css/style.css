@@ -50,15 +50,6 @@ float: left;
 text-align: center;
 }
 
-.bar {
-    background-color: transparent;
-    border: none;
-}
-
-.pane {
-    background-color: transparent;
-}
-
 .button.button-transparent {
     border-color: transparent;
     background-color: transparent;
@@ -81,6 +72,14 @@ text-align: center;
 
 [nav-view-transition="ios"][nav-view-direction="forward"],
 [nav-view-transition="ios"][nav-view-direction="back"] {
+    background-color: transparent;
+}
+.bar {
+    background-color: transparent;
+    border: none;
+}
+
+.pane {
     background-color: transparent;
 }
 

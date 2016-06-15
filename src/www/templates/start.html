@@ -1,18 +1,25 @@
 <ion-view>
     <h1 class="title">Quadrix</h1>
-    <div class="row row-center" style="height:100px" ng-hide="waitingForMatch">
+    <div class="row row-center" style="height:100px" ng-hide="waitingForMatch || editSettings">
         <a href="#/game" class="center">
             <button class="button button-full button-transparent">
                 Start Game
             </button>
         </a>
     </div>
-    <div class="row row-center" style="height:100px" ng-hide="waitingForMatch">
+    <div class="row row-center" style="height:100px" ng-hide="waitingForMatch || editSettings">
       <a href="#" class="center" ng-click="matchRequest()">
         <button class="button button-full button-transparent">
             Play with friend
         </button>
       </a>
+    </div>
+    <div class="row row-center" style="height:100px" ng-hide="waitingForMatch || editSettings">
+        <a href="#" class="center" ng-click="editSettings = true">
+            <button class="button button-full button-transparent">
+                Settings
+            </button>
+        </a>
     </div>
     <div class="row row-center center" ng-show="waitingForMatch">
       <h2 style="margin-top:2em; margin-bottom:1em">Searching</h2>
@@ -25,19 +32,19 @@
         </button>
       </a>
     </div>
-    <div class="row row-center center" style="height:100px">
-      <form id="settings" ng-hide="waitingForMatch">
-          <fieldset class="center">
-              <legend>Gamesettings</legend>
-              <label for="name">Name:<input name="name" id="name" name="yourName" placeholder="your name" ng-model="yourName" ng-change="change()">
-              </label>
-
-              <br><br>
-              <label for="c2s">
-                  Coins 2 Solve:<input name="c2s" id="c2s" placeholder="3" name="coinsToSolve" ng-model="coinsToSolve" ng-change="change()">
-              </label>
-
-           </fieldset>
+    <div class="row row-center center">
+      <form ng-show="editSettings">
+           <div>
+             <div class="item item-input">
+               <span class="input-label">Player Name</span>
+               <input ng-model="yourName" type="text">
+             </div>
+             <div class="item item-input">
+               <span class="input-label">Coins to solve</span>
+               <input ng-model="coinsToSolve" type="text">
+             </div>
+             <button class="button button-full button-positive" ng-click="save()">Save</button>
+           </div>
        </form>
     </div>
     <br><br>
@@ -46,6 +53,4 @@
            {{usercount}} player online
         </button>
     </div>
-  <!--  <div class="waitingForMatch animate-hide" ng-show="waitingForMatch"><h1>Waiting</h1></div>-->
-
 </ion-view>

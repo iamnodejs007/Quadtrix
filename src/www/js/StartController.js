@@ -1,8 +1,9 @@
-app.controller('StartController', function($scope, $state, socket, SessionService) {
+app.controller('StartController', function($scope, $state, socket, SessionService, $ionicModal) {
   $scope.usercount;
   $scope.yourName = "";
   $scope.coinsToSolve = 3;
   $scope.waitingForMatch = false;
+  $scope.editSettings = false;
   var userId = "_" + Math.random();
   socket.on('user.count', function(message) {
     $scope.usercount = message.users;
@@ -31,9 +32,10 @@ app.controller('StartController', function($scope, $state, socket, SessionServic
     $state.go('game');
   })
 
-
   // on settingschange push it to the SessionService
-  $scope.change = function() {
-       SessionService.attachUser(userId, $scope.yourName, $scope.coinsToSolve, "Bob", $scope.yourName);
+  $scope.save = function() {
+    $scope.editSettings = false;
+    SessionService.attachUser(userId, $scope.yourName, $scope.coinsToSolve, "Bob", $scope.yourName);
+
   };
 });
