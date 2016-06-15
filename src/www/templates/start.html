@@ -1,21 +1,32 @@
 <ion-view>
-    <h1 class="title" onclick="generateBackground()">Quadrix</h1>
-    <div class="row row-center" style="height:100px">
+    <h1 class="title">Quadrix</h1>
+    <div class="row row-center" style="height:100px" ng-hide="waitingForMatch">
         <a href="#/game" class="center">
             <button class="button button-full button-transparent">
                 Start Game
             </button>
         </a>
     </div>
-    <div class="row row-center" style="height:100px">
+    <div class="row row-center" style="height:100px" ng-hide="waitingForMatch">
       <a href="#" class="center" ng-click="matchRequest()">
         <button class="button button-full button-transparent">
             Play with friend
         </button>
       </a>
     </div>
+    <div class="row row-center center" ng-show="waitingForMatch">
+      <h2 style="margin-top:2em; margin-bottom:1em">Searching</h2>
+      <ion-spinner icon="spiral"></ion-spinner>
+    </div>
+    <div class="row row-center" style="height:100px" ng-show="waitingForMatch">
+      <a href="#" class="center" ng-click="cancelRequest()">
+        <button class="button button-full button-transparent">
+            Cancel Search
+        </button>
+      </a>
+    </div>
     <div class="row row-center center" style="height:100px">
-      <form id="settings">
+      <form id="settings" ng-hide="waitingForMatch">
           <fieldset class="center">
               <legend>Gamesettings</legend>
               <label for="name">Name:<input name="name" id="name" name="yourName" placeholder="your name" ng-model="yourName" ng-change="change()">
@@ -35,6 +46,6 @@
            {{usercount}} player online
         </button>
     </div>
-    <div class="waitingForMatch animate-hide" ng-show="waitingForMatch"><h1>Waiting</h1></div>
+  <!--  <div class="waitingForMatch animate-hide" ng-show="waitingForMatch"><h1>Waiting</h1></div>-->
 
 </ion-view>

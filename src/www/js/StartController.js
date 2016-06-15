@@ -16,9 +16,9 @@ app.controller('StartController', function($scope, $state, socket, SessionServic
 
   }
 
-  $scope.cancelrequest = function() {
-      var message = {};
-      socket.emit("match.cancelrequest", message);
+  $scope.cancelRequest = function() {
+      socket.emit("match.cancelrequest", {});
+      $scope.waitingForMatch = false;
   }
 
   socket.on('match.found', function(message) {
