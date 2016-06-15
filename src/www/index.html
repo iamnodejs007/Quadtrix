@@ -45,33 +45,6 @@
     <ion-nav-view name="content"></ion-nav-view>
 
 </body>
-<!--
-<script>
-    function generateBackground() {
-        var pattern = Trianglify({
-            /*set fixed color    x_colors: "Spectral",*/
-            variance: "0",
-            seed: Math.random(),
-            x_colors: 'random',
-
-            width: window.innerWidth,
-            height: window.innerHeight
-        });
-
-        /*delete exsisting backgrounds*/
-        var oldBackground = document.body.getElementsByTagName("canvas");
-        if (oldBackground.length === 1) {
-            oldBackground[0].remove();
-        }
-
-
-        document.body.appendChild(pattern.canvas())
-
-    }
-    /*set inital background*/
-    generateBackground();
-  </script>
--->
 <script>
     /*prevent scrolling on device*/
     window.addEventListener('load', function () {
