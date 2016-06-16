@@ -5,29 +5,36 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
   if(SessionService.isSingelplayer == undefined) {
     SessionService.isSingelplayer = true;
   }
-  if (SessionService.beginner == undefined) {
+  if (SessionService.beginner == undefined || SessionService.beginner == "") {
     SessionService.beginner = $scope.map.players.you.name;
   }
-  if (SessionService.coinsToSolve == undefined) {
+  if (SessionService.coinsToSolve == undefined || SessionService.coinsToSolve == "") {
     SessionService.coinsToSolve = 3;
-    SessionService.name = "Bob"
+  } else {
+    $scope.map.coinsToSolve = SessionService.coinsToSolve;
   }
-  $scope.map.players.you.name = SessionService.name;
-  $scope.map.coinsToSolve = SessionService.coinsToSolve;
+  if (SessionService.name == undefined || SessionService.name == "") {
+    SessionService.name = $scope.map.players.you.name;
+  } else {
+    $scope.map.players.you.name = SessionService.name;
+  }
+
+  if (SessionService.opponent != undefined  || SessionService.opponent == "") {
+    SessionService.opponent = $scope.map.players.opponent.name; // oponent name
+  } else {
+    $scope.map.players.opponent.name = SessionService.opponent;
+  }
+
+  var lockField = false;
   $scope.map.startColor = "red";
 
-  if (SessionService.opponent != undefined) {
-    $scope.map.players.opponent.name = SessionService.opponent; // oponent name
+  if (SessionService.beginner != $scope.map.players.you.name) {
+    lockField = true;
+    $scope.map.startColor = "blue";
+  } else {
+    $scope.map.startColor = "red";
   }
-  var lockField = false;
-  if (SessionService.beginner != undefined) {
-    if (SessionService.beginner != $scope.map.players.you.name) {
-      lockField = true;
-      $scope.map.startColor = "blue";
-    } else {
-      $scope.map.startColor = "red";
-    }
-  }
+
 	var coinCount = 0;
   var turnCount = 0;
   var currentPlayer = { playername: SessionService.beginner , color: "blue" };

@@ -34,3 +34,10 @@ function AnimateCircle(coin, steps, doneFn) {
     });
 	}
 }
+
+function terminateCoin(coin){
+  $.Velocity.animate(coin, {
+    opacity: 0,
+    scale: 1.5
+  },500);
+}
