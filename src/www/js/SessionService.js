@@ -1,5 +1,10 @@
-app.service('SessionService', function () {
-  var user = {};
+app.service('SessionService', function ($localStorage) {
+
+  var user = $localStorage.$default({
+    name: 'Bob',
+    coinsToSolve : 3
+  });
+
   return {
     attachUser: function(userId, name, coinsToSolve, opponent, beginner, isSinglePlayer){
       user.userId = userId;
