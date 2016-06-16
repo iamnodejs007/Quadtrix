@@ -2,33 +2,34 @@
 app.controller('GameController', function ($scope, $state, $timeout, socket, SessionService) {
   var map = new Map(6, 6, new player('Bob', 0, 'red'), new player('Alice', 0, 'blue'));
   $scope.map = map;
-  if(SessionService.isSingelplayer == undefined) {
-    SessionService.isSingelplayer = true;
+  var session = SessionService.getUser();
+  if(session.isSingelplayer == undefined) {
+    session.isSingelplayer = true;
   }
-  if (SessionService.beginner == undefined || SessionService.beginner == "") {
-    SessionService.beginner = $scope.map.players.you.name;
+  if (session.beginner == undefined || session.beginner == "") {
+    session.beginner = $scope.map.players.you.name;
   }
-  if (SessionService.coinsToSolve == undefined || SessionService.coinsToSolve == "") {
-    SessionService.coinsToSolve = 3;
+  if (session.coinsToSolve == undefined || session.coinsToSolve == "") {
+    session.coinsToSolve = 3;
   } else {
-    $scope.map.coinsToSolve = SessionService.coinsToSolve;
+    $scope.map.coinsToSolve = session.coinsToSolve;
   }
-  if (SessionService.name == undefined || SessionService.name == "") {
-    SessionService.name = $scope.map.players.you.name;
+  if (session.name == undefined || session.name == "") {
+    session.name = $scope.map.players.you.name;
   } else {
-    $scope.map.players.you.name = SessionService.name;
+    $scope.map.players.you.name = session.name;
   }
 
-  if (SessionService.opponent != undefined  || SessionService.opponent == "") {
-    SessionService.opponent = $scope.map.players.opponent.name; // oponent name
+  if (session.opponent == undefined  || session.opponent == "") {
+    session.opponent = $scope.map.players.opponent.name; // oponent name
   } else {
-    $scope.map.players.opponent.name = SessionService.opponent;
+    $scope.map.players.opponent.name = session.opponent;
   }
 
   var lockField = false;
   $scope.map.startColor = "red";
 
-  if (SessionService.beginner != $scope.map.players.you.name) {
+  if (session.beginner != $scope.map.players.you.name) {
     lockField = true;
     $scope.map.startColor = "blue";
   } else {
@@ -37,7 +38,7 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
 
 	var coinCount = 0;
   var turnCount = 0;
-  var currentPlayer = { playername: SessionService.beginner , color: "blue" };
+  var currentPlayer = { playername: session.beginner , color: "blue" };
 
     $scope.back = function () {
         console.log('hallo game');
@@ -59,6 +60,24 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
       lockField = false;
     });
 
+    $scope.timeoutPlayer = function() {
+      if (session.isSingelplayer == true) {
+        // single player
+        if(turnCount % 2 == 1) {
+          changePlayer($scope.map.players.you.name, $scope.map.players.you.name);
+        } else {
+          changePlayer($scope.map.players.you.name,map.players.you.name);
+        }
+        coinCoint++;
+        turnCount++;
+        // multiplayer
+      } else {
+        fieldLock = false;
+        socket.emit("game.turn", {});
+      }
+
+    }
+
     $scope.insertCoinOnClick = function(x, y) {
         // only insert if allowed.
         if(lockField === false) {
@@ -68,7 +87,7 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
           // switch player
 
           let inserted;
-          if (SessionService.isSingelplayer == true) {
+          if (session.isSingelplayer == true) {
             if(turnCount % 2 == 1) {
               inserted = $scope.map.applyCoin(
                new Coin(x, y, $scope.map.players.you.name, coinCount, $scope.map.players.you.color)
@@ -97,7 +116,7 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
               turnNumber:turnCount,
             };
 
-            if(SessionService.isSingelplayer == true) {
+            if(session.isSingelplayer == true) {
               lockField = false;
             } else {
               socket.emit("game.turn", turn);
@@ -113,8 +132,6 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
         }
       };
 
-
-
 	$scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
     /* black magic
        after the animation is over, a timeout is called.
@@ -128,8 +145,8 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
       // maybe not needed if we have player interaction where the game field is locked through
       // the enemy Turn anyways.
       function(){$timeout(function(){
-        $scope.map.checkForTermination("rows");
-        $scope.map.checkForTermination("colls");
+        $scope.map.checkForTermination("rows", $timeout);
+        $scope.map.checkForTermination("colls", $timeout);
       }, 1000);},
       // animation Timeout and Redraw.
       function(){$timeout(function(){},0);}

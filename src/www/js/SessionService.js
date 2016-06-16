@@ -13,5 +13,4 @@ app.service('SessionService', function () {
       return user;
     }
   }
-
 });

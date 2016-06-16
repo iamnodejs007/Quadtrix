@@ -36,7 +36,11 @@ function AnimateCircle(coin, steps, doneFn) {
 }
 
 function terminateCoin(coin){
-  $.Velocity.animate(coin, {
+  var circle = $('#'+coin.id);
+  circle.velocity({
+    transformOrigin: "50% 50%"
+  });
+  $.Velocity.animate(circle, {
     opacity: 0,
     scale: 1.5
   },500);

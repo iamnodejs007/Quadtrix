@@ -228,7 +228,6 @@ class Map {
           coinsToRemove.push(coin);
           lastOwner = coin.owner;
        }
-
       }
     }
   }
@@ -242,15 +241,28 @@ class Map {
   }
 
   // remove coins from map object.
-  removeCoins(coinsToRemove) {
+  removeCoins(coinsToRemove, timeout) {
+
     for (var i = 0; i < coinsToRemove.length; i++) {
       // get index from coin array
       var index = this.coins.findIndex(function(element) {
-        return element.id === coinsToRemove[i].id ;
+        return element.id === coinsToRemove[i].id;
       });
-      // remove the coin
-      this.coins.splice(index, 1)
+      // remove Animation
+      terminateCoin(this.coins[index]);
     }
+
+    setTimeout(function (coins, coinsToRemove) {
+      for (var i = 0; i < coinsToRemove.length; i++) {
+        // get index from coin array
+        var index = coins.findIndex(function(element) {
+          return element.id === coinsToRemove[i].id;
+        });
+        // remove Animation
+        coins.splice(index, 1);
+      }
+    }, 1000, this.coins, coinsToRemove);
+
   }
 
   // start the coin animation --- called from GameController on ngRepeatFinishedEvent

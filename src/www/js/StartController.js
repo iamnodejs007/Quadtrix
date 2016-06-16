@@ -15,7 +15,7 @@ app.controller('StartController', function($scope, $state, socket, SessionServic
       var message = { name: $scope.yourName, coinsToSolve: $scope.coinsToSolve };
       socket.emit("match.request", message);
       $scope.waitingForMatch = true;
-      SessionService.attachUser("1", $scope.yourName, $scope.coinsToSolve, $scope.yourName, $scope.yourName, false);
+      //SessionService.attachUser("1", $scope.yourName, $scope.coinsToSolve, $scope.yourName, $scope.yourName, false);
   }
 
   $scope.cancelRequest = function() {

@@ -35,6 +35,9 @@ class Timer{
       setTimeout( Timer.countdown, 1000, time);
    }
    else {
+     if (time==0) {
+       // trigger timeout event here :)
+     }
       Timer.stopTimer=false;
       Timer.timerRdy = true;
       if (Timer.startNewTimer) {
