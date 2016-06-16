@@ -67,7 +67,7 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
           turnCount++;
           // switch player
 
-          let inserted;
+          var inserted;
           if (SessionService.isSingelplayer == true) {
             if(turnCount % 2 == 1) {
               inserted = $scope.map.applyCoin(

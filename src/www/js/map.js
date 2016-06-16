@@ -187,11 +187,11 @@ class Map {
   // Input "row" to check row lines otherwise it will check column lines
   checkForTermination(checkRowOrColumn) {
     for (var i = 1; i < this.width; i++) {
-      let lastOwner = "";
-      let currentOwner = "";
-      let count = 0;
+      var lastOwner = "";
+      var currentOwner = "";
+      var count = 0;
       var coinsToRemove = [];
-      let coin;
+      var coin;
       for (var j = 1; j < this.height; j++) {
         // get coin on Position
         if (checkRowOrColumn == "rows") {
