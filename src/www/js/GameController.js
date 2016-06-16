@@ -2,9 +2,20 @@
 app.controller('GameController', function ($scope, $state, $timeout, socket, SessionService) {
   var map = new Map(6, 6, new player('Bob', 0, 'red'), new player('Alice', 0, 'blue'));
   $scope.map = map;
+  if(SessionService.isSingelplayer == undefined) {
+    SessionService.isSingelplayer = true;
+  }
+  if (SessionService.beginner == undefined) {
+    SessionService.beginner = $scope.map.players.you.name;
+  }
+  if (SessionService.coinsToSolve == undefined) {
+    SessionService.coinsToSolve = 3;
+    SessionService.name = "Bob"
+  }
   $scope.map.players.you.name = SessionService.name;
   $scope.map.coinsToSolve = SessionService.coinsToSolve;
-  $scope.map.startColor;
+  $scope.map.startColor = "red";
+
   if (SessionService.opponent != undefined) {
     $scope.map.players.opponent.name = SessionService.opponent; // oponent name
   }
@@ -13,12 +24,13 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
     if (SessionService.beginner != $scope.map.players.you.name) {
       lockField = true;
       $scope.map.startColor = "blue";
-    }
-    else
+    } else {
       $scope.map.startColor = "red";
+    }
   }
 	var coinCount = 0;
   var turnCount = 0;
+  var currentPlayer = { playername: SessionService.beginner , color: "blue" };
 
     $scope.back = function () {
         console.log('hallo game');
@@ -48,9 +60,25 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
           turnCount++;
           // switch player
 
-          let inserted = $scope.map.applyCoin(
+          let inserted;
+          if (SessionService.isSingelplayer == true) {
+            if(turnCount % 2 == 1) {
+              inserted = $scope.map.applyCoin(
+               new Coin(x, y, $scope.map.players.you.name, coinCount, $scope.map.players.you.color)
+              );
+              changePlayer($scope.map.players.opponent.name,map.players.you.name);
+           } else {
+             inserted = $scope.map.applyCoin(
+              new Coin(x, y, $scope.map.players.opponent.name, coinCount, $scope.map.players.opponent.color)
+              );
+              changePlayer($scope.map.players.you.name,map.players.you.name);
+           }
+         } else {
+           inserted = $scope.map.applyCoin(
             new Coin(x, y, $scope.map.players.you.name, coinCount, $scope.map.players.you.color)
-          );
+           );
+           changePlayer($scope.map.players.opponent.name,map.players.you.name);
+         }
 
           if (inserted) {
             var turn = {
@@ -61,8 +89,13 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
               direction: null,
               turnNumber:turnCount,
             };
-            socket.emit("game.turn", turn);
-            changePlayer($scope.map.players.opponent.name,map.players.you.name);
+
+            if(SessionService.isSingelplayer == true) {
+              lockField = false;
+            } else {
+              socket.emit("game.turn", turn);
+            }
+            // changePlayer($scope.map.players.opponent.name,map.players.you.name);
           }
           else {
             lockField = false;
