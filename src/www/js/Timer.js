@@ -37,6 +37,7 @@ class Timer{
    else {
      if (time==0) {
        // trigger timeout event here :)
+       timeoutPlayer();
      }
       Timer.stopTimer=false;
       Timer.timerRdy = true;

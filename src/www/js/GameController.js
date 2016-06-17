@@ -47,35 +47,40 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
     };
 
     socket.on('game.turn', function(message) {
-      $scope.map.applyCoin(
-        new Coin(message.target.x,
-                message.target.y,
-                $scope.map.players.opponent.name,
-                message.turnNumber,
-                $scope.map.players.opponent.color)
-      );
-      turnCount = message.turnNumber;
-      coinCount = message.turnNumber;
+      if (message != {}) {
+        $scope.map.applyCoin(
+          new Coin(message.target.x,
+                  message.target.y,
+                  $scope.map.players.opponent.name,
+                  message.turnNumber,
+                  $scope.map.players.opponent.color)
+        );
+        turnCount = message.turnNumber;
+        coinCount = message.turnNumber;
+      } else {
+        turnCount++;
+        coinCount++;
+      }
       changePlayer($scope.map.players.you.name, $scope.map.players.you.name);
       lockField = false;
     });
 
-    $scope.timeoutPlayer = function() {
+    // timeout event / Not used yet.
+    timeoutPlayer = function() {
       if (session.isSingelplayer == true) {
         // single player
-        if(turnCount % 2 == 1) {
-          changePlayer($scope.map.players.you.name, $scope.map.players.you.name);
-        } else {
-          changePlayer($scope.map.players.you.name,map.players.you.name);
-        }
-        coinCoint++;
+        coinCount++;
         turnCount++;
-        // multiplayer
-      } else {
-        fieldLock = false;
+        if(turnCount % 2 == 1) {
+          changePlayer($scope.map.players.opponent.name, $scope.map.players.you.name);
+        } else {
+          changePlayer($scope.map.players.you.name, $scope.map.players.you.name);
+        }
+      } else { // multiplayer
+        fieldLock = true;
         socket.emit("game.turn", {});
+        changePlayer($scope.map.players.opponent.name,map.players.you.name);
       }
-
     }
 
     $scope.insertCoinOnClick = function(x, y) {
