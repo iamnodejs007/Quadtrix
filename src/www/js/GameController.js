@@ -1,5 +1,5 @@
 
-app.controller('GameController', function ($scope, $state, $timeout, socket, SessionService) {
+app.controller('GameController', function ($scope, $state, $ionicPopup, $timeout, socket, SessionService) {
   var map = new Map(6, 6, new player('Bob', 0, 'red'), new player('Alice', 0, 'blue'));
   $scope.map = map;
   var session = SessionService.getUser();
@@ -25,7 +25,6 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
   } else {
     $scope.map.players.opponent.name = session.opponent;
   }
-
   var lockField = false;
   $scope.map.startColor = "red";
 
@@ -137,6 +136,17 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
         }
       };
 
+      function endgame(msg){
+                   var alertPopup = $ionicPopup.alert({
+                     title: 'Spielende',
+                     template: 'Sie haben '+msg+'!'
+                   });
+                   alertPopup.then(function(res) {
+                     $scope.back();
+                   });
+
+              };
+
 	$scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
     /* black magic
        after the animation is over, a timeout is called.
@@ -157,4 +167,6 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
       function(){$timeout(function(){},0);}
     );
 	});
+
+
 });

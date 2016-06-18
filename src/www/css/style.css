@@ -24,6 +24,11 @@ div {
 
 }
 
+.rectangle{
+  width: 15%;
+  height: 15%;
+}
+
 .background
 {
 background: url('../img/background.svg');
