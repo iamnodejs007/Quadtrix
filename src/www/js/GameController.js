@@ -47,7 +47,7 @@ app.controller('GameController', function ($scope, $state, $timeout, socket, Ses
     };
 
     socket.on('game.turn', function(message) {
-      if (message != {}) {
+      if (message.turnNumber != undefined) {
         $scope.map.applyCoin(
           new Coin(message.target.x,
                   message.target.y,
