@@ -1,16 +1,16 @@
 <ion-view>
-    <h1 class="title">Quadrix</h1>
+    <h1 class="title">Quadtrix</h1>
     <div class="row row-center" style="height:100px" ng-hide="waitingForMatch || editSettings">
         <a href="#/game" class="center">
             <button class="button button-full button-transparent">
-                Start Game
+                Play game
             </button>
         </a>
     </div>
     <div class="row row-center" style="height:100px" ng-hide="waitingForMatch || editSettings">
       <a href="#" class="center" ng-click="matchRequest()">
         <button class="button button-full button-transparent">
-            Play with friend
+            Play online
         </button>
       </a>
     </div>
@@ -48,8 +48,8 @@
        </form>
     </div>
     <br><br>
-    <div class="row row-center" style="height:100px">
-        <button class="button button-full button-transparent">
+    <div class="row row-center" style="position:absolute;bottom: 10px;">
+        <button class="button button-full button-transparent" style="font-size:20px;">
            {{usercount}} player online
         </button>
     </div>
