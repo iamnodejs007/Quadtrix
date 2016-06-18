@@ -1,4 +1,4 @@
-app.controller('GameController', function($scope, $state, $ionicPopup, $timeout, socket, SessionService, $rootScope) {
+app.controller('GameController', function($scope, $state, $ionicPopup, $timeout, socket, SessionService, $rootScope, $interval) {
 
   $rootScope.$on('$stateChangeSuccess',
     function(event, toState, toParams, fromState, fromParams){
@@ -24,11 +24,31 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
       $scope.map.startColor = "red";
     }
 
-    new Timer();
     $scope.coinCount = 0;
     $scope.turnCount = 0;
   };
   $scope.init();
+
+  $scope.turnTime = 9;
+  $scope.countdownIntervall = undefined;
+  $scope.countdown = function(time){
+    time -= 1;
+    if($scope.countdownIntervall !== undefined){
+      $interval.cancel($scope.countdownIntervall);
+    }
+
+    $scope.turnTime = time;
+
+    var updateTime = function(){
+      $scope.turnTime -= 1;
+      if($scope.turnTime < 0)
+      {
+        $interval.cancel($scope.countdownIntervall);
+        $scope.timeoutPlayer();
+      }
+    };
+    $scope.countdownIntervall = $interval(updateTime, 1000);
+  };
 
   $scope.back = function() {
     console.log('hallo game');
@@ -62,7 +82,7 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
   });
 
   // timeout event
-  timeoutPlayer = function() {
+  $scope.timeoutPlayer = function() {
     if ($scope.user.isSingelplayer) {
       // single player
       $scope.coinCount++;
@@ -77,6 +97,7 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
       socket.emit("game.turn", {});
       changePlayer($scope.map.players.opponent.name, $scope.map.players.you.name);
     }
+    $scope.countdown(10);
   };
 
   $scope.insertCoinOnClick = function(x, y) {
@@ -103,6 +124,7 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
       inserted = $scope.map.applyCoin(new Coin(x, y, $scope.map.players.you.color, $scope.coinCount, $scope.map.players.you.color));
       changePlayer($scope.map.players.opponent.name, $scope.map.players.you.name);
     }
+    $scope.countdown(10);
 
     if (inserted) {
       var turn = {

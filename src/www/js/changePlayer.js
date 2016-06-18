@@ -31,12 +31,4 @@ function changePlayer(currentPlayer,player1) {
     },500);
 
   }
-  if (!Timer.timerRdy) {
-    Timer.stopTimer=true;
-    Timer.startNewTimer=true;
-  } else {
-    Timer.timerRdy=false;
-    Timer.countdown(10);
-  }
-
 }
