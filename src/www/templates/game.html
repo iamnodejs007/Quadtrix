@@ -31,8 +31,8 @@
             </linearGradient>
           </defs>
             <g ng-repeat="x in [ 1, 2, 3, 4, 5]">
-                <rect ng-repeat="y in [ 1, 2, 3, 4, 5]" stroke-width="1px" stroke="#CCC"
-                 shape-rendering="crispEdges" class="rectangle" fill="#FFF" ng-attr-x="{{x * 40}}"
+                <rect ng-repeat="y in [ 1, 2, 3, 4, 5]" stroke-width="1" stroke="#fff"
+                 shape-rendering="crispEdges" width="40" height="40" fill="transparent" ng-attr-x="{{x * 40}}"
                  ng-attr-y="{{y * 40}}" ng-click="insertCoin(x, y)">
                </rect>
             </g>
