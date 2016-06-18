@@ -196,7 +196,7 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
           if (win !== undefined) {
             endgame(win + " hat Gewonnen!");
           }
-        }, 1000);
+        }, 0);
       },
       // animation Timeout and Redraw.
       function() {
