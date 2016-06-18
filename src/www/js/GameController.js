@@ -3,7 +3,7 @@ app.controller('GameController', function ($scope, $state, $ionicPopup, $timeout
   var map = new Map(6, 6, new player('Bob', 0, 'red'), new player('Alice', 0, 'blue'));
   $scope.map = map;
   var session = SessionService.getUser();
-  if(session.isSingelplayer == undefined) {
+  if(session.isSingelplayer == undefined || session.isSingelplayer == true) {
     session.isSingelplayer = true;
   }
   if (session.beginner == undefined || session.beginner == "") {
@@ -64,6 +64,12 @@ app.controller('GameController', function ($scope, $state, $ionicPopup, $timeout
       lockField = false;
     });
 
+    socket.on('game.exit' , function(message) {
+      if (message == "opponent disconnected") {
+        //
+      }
+    });
+
     // timeout event / Not used yet.
     timeoutPlayer = function() {
       if (session.isSingelplayer == true) {
@@ -94,18 +100,18 @@ app.controller('GameController', function ($scope, $state, $ionicPopup, $timeout
           if (session.isSingelplayer == true) {
             if(turnCount % 2 == 1) {
               inserted = $scope.map.applyCoin(
-               new Coin(x, y, $scope.map.players.you.name, coinCount, $scope.map.players.you.color)
+               new Coin(x, y, $scope.map.players.you.color, coinCount, $scope.map.players.you.color)
               );
               changePlayer($scope.map.players.opponent.name,map.players.you.name);
            } else {
              inserted = $scope.map.applyCoin(
-              new Coin(x, y, $scope.map.players.opponent.name, coinCount, $scope.map.players.opponent.color)
+              new Coin(x, y, $scope.map.players.opponent.color, coinCount, $scope.map.players.opponent.color)
               );
               changePlayer($scope.map.players.you.name,map.players.you.name);
            }
          } else {
            inserted = $scope.map.applyCoin(
-            new Coin(x, y, $scope.map.players.you.name, coinCount, $scope.map.players.you.color)
+            new Coin(x, y, $scope.map.players.you.color, coinCount, $scope.map.players.you.color)
            );
            changePlayer($scope.map.players.opponent.name,map.players.you.name);
          }
@@ -134,18 +140,17 @@ app.controller('GameController', function ($scope, $state, $ionicPopup, $timeout
             console.log('faild to insert');
           }
         }
-      };
+    };
 
-      function endgame(msg){
-                   var alertPopup = $ionicPopup.alert({
-                     title: 'Spielende',
-                     template: 'Sie haben '+msg+'!'
-                   });
-                   alertPopup.then(function(res) {
-                     $scope.back();
-                   });
-
-              };
+  function endgame(msg) {
+       var alertPopup = $ionicPopup.alert({
+         title: 'Spielende',
+         template: msg
+       });
+       alertPopup.then(function(res) {
+         $scope.back();
+       });
+  };
 
 	$scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
     /* black magic
@@ -162,11 +167,13 @@ app.controller('GameController', function ($scope, $state, $ionicPopup, $timeout
       function(){$timeout(function(){
         $scope.map.checkForTermination("rows", $timeout);
         $scope.map.checkForTermination("colls", $timeout);
+        var win = $scope.map.checkWinConditionForPlayer();
+            if (win != undefined) {
+              endgame(win + " hat Gewonnen!");
+          }
       }, 1000);},
       // animation Timeout and Redraw.
       function(){$timeout(function(){},0);}
     );
 	});
-
-
 });

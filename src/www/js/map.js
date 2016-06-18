@@ -6,6 +6,7 @@ class Map {
     this.coinCount = 0;
     this.players = { you: you, opponent: opponent }
     this.coinsToSolve = 3;
+    this.winCondiditon = 3;
     }
 
     getCoins() { return this.coins; }
@@ -232,12 +233,21 @@ class Map {
     }
   }
 
-  addScroreToPlayer(playerName, score) {
-    if (playerName == this.players.you.name) {
-      this.players.you.score += score;
+  addScroreToPlayer(playerColor, score) {
+    if (playerColor == this.players.you.color) {
+      this.players.you.score += (score-1)*2;
     } else {
-      this.players.opponent.score += score;
+      this.players.opponent.score += (score-1)*2;
     }
+  }
+
+  checkWinConditionForPlayer() {
+    if (this.players.you.score >= this.winCondiditon) {
+      return this.players.you.name;
+    } else if (this.players.opponent.score >= this.winCondiditon) {
+      return this.players.opponent.name;
+    }
+    return undefined;
   }
 
   // remove coins from map object.
