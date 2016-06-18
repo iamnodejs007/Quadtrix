@@ -1,34 +1,30 @@
 app.controller('GameController', function($scope, $state, $ionicPopup, $timeout, socket, SessionService, $rootScope, $interval) {
 
   $rootScope.$on('$stateChangeSuccess',
-    function(event, toState, toParams, fromState, fromParams){
+    function(event, toState, toParams, fromState, fromParams) {
       console.log(event, toState, toParams, fromState, fromParams);
-      if(toState.name === "game")
+      if (toState.name === "game")
         $scope.init();
     });
 
+  $scope.isMyTurn = function() {
+    return $scope.currentPlayer === $scope.map.players.you.name;
+  };
 
-      $scope.isMyTurn = function(){
-         return $scope.currentPlayer === $scope.map.players.you.name;
-       };
+  $scope.changePlayer = function(currentPlayer) {
+    $scope.currentPlayer = currentPlayer;
+    changePlayer(currentPlayer, $scope.map.players.you.name);
+  };
 
-      $scope.changePlayer = function(currentPlayer) {
-        $scope.currentPlayer = currentPlayer;
-        changePlayer(currentPlayer,$scope.map.players.you.name);
-      };
-
-  $scope.init = function(){
+  $scope.init = function() {
     $scope.user = SessionService.getUser();
 
     var map = new Map(6, 6, new player($scope.user.name, 0, 'red'), new player($scope.user.opponent, 0, 'blue'));
     $scope.map = map;
     $scope.map.coinsToSolve = $scope.user.coinsToSolve;
-
-    $scope.lockField = false;
     $scope.map.startColor = "red";
 
     if ($scope.user.beginner != $scope.map.players.you.name) {
-      $scope.lockField = true;
       $scope.map.startColor = "blue";
       $scope.changePlayer($scope.map.players.opponent.name);
     } else {
@@ -43,19 +39,18 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
 
   $scope.turnTime = 9;
   $scope.countdownIntervall = undefined;
-  $scope.countdown = function(time){
+  $scope.countdown = function(time) {
     time -= 1;
-    if($scope.countdownIntervall !== undefined){
+    if ($scope.countdownIntervall !== undefined) {
       $interval.cancel($scope.countdownIntervall);
     }
 
     $scope.turnTime = time;
 
-    var updateTime = function(){
+    var updateTime = function() {
       $scope.turnTime -= 1;
-      if($scope.turnTime < 0)
-      {
-        $scope.turnTime =0;
+      if ($scope.turnTime < 0) {
+        $scope.turnTime = 0;
         $interval.cancel($scope.countdownIntervall);
         $scope.timeoutPlayer();
       }
@@ -87,8 +82,6 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
       $scope.coinCount++;
     }
     $scope.changePlayer($scope.map.players.you.name);
-    $scope.lockField = false;
-
     $scope.countdown(10);
   });
 
@@ -104,41 +97,34 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
       // single player
       $scope.coinCount++;
       $scope.turnCount++;
-      if ($scope.turnCount % 2 == 1) {
+      if ($scope.isMyTurn()) {
         $scope.changePlayer($scope.map.players.opponent.name);
       } else {
         $scope.changePlayer($scope.map.players.you.name);
       }
       $scope.countdown(10);
-    }
-    else { // multiplayer
-      fieldLock = true;
+    } else { // multiplayer
       if ($scope.isMyTurn()) { //its me
-        console.log($scope.map.players.you.name + " ist drann.");
         $scope.countdown(10);
         socket.emit("game.turn", {});
         $scope.changePlayer($scope.map.players.opponent.name);
-      }
-      else {
-        console.log("gegner ist drann, warte");
       }
     }
   };
 
   $scope.insertCoinOnClick = function(x, y) {
     // only insert if allowed.
-    if ($scope.isMyTurn() === false) {
+    if ($scope.isMyTurn() === false && $scope.user.isSingelplayer === false) {
       return;
     }
 
-    $scope.lockField = true;
     $scope.coinCount++;
     $scope.turnCount++;
     // switch player
 
     var inserted;
     if ($scope.user.isSingelplayer === true) {
-      if ($scope.turnCount % 2 == 1) {
+      if ($scope.isMyTurn()) {
         inserted = $scope.map.applyCoin(new Coin(x, y, $scope.map.players.you.color, $scope.coinCount, $scope.map.players.you.color));
         $scope.changePlayer($scope.map.players.opponent.name);
       } else {
@@ -161,13 +147,10 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
         turnNumber: $scope.turnCount,
       };
 
-      if ($scope.user.isSingelplayer === true) {
-        $scope.lockField = false;
-      } else {
+      if ($scope.user.isSingelplayer === false) {
         socket.emit("game.turn", turn);
       }
     } else {
-      $scope.lockField = false;
       $scope.turnCount--;
       $scope.coinCount--;
       console.log('faild to insert');

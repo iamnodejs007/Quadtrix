@@ -1,11 +1,11 @@
 <ion-view>
     <h1 class="title">Quadtrix</h1>
     <div class="row row-center" style="height:100px" ng-hide="waitingForMatch || editSettings">
-        <a href="#/game" class="center">
+        <span class="center" ng-click="matchSingelplayer()">
             <button class="button button-full button-transparent">
                 Play game
             </button>
-        </a>
+        </span>
     </div>
     <div class="row row-center" style="height:100px" ng-hide="waitingForMatch || editSettings">
       <a href="#" class="center" ng-click="matchRequest()">

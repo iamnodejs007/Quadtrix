@@ -1,6 +1,6 @@
 app.controller('StartController', function($scope, $state, socket, SessionService, $ionicModal) {
-  $scope.usercount;
-  $scope.yourName = "";
+  $scope.usercount = 0;
+  $scope.yourName = SessionService.getUser().name;
   $scope.coinsToSolve = 3;
   $scope.waitingForMatch = false;
   $scope.editSettings = false;
@@ -18,18 +18,24 @@ app.controller('StartController', function($scope, $state, socket, SessionServic
     }
     $scope.coinsToSolve = message.coinsToSolve;
     $state.go('game');
-  })
+  });
 
   $scope.matchRequest = function() {
       var message = { name: $scope.yourName, coinsToSolve: $scope.coinsToSolve };
       socket.emit("match.request", message);
       $scope.waitingForMatch = true;
       //SessionService.attachUser("1", $scope.yourName, $scope.coinsToSolve, $scope.yourName, $scope.yourName, false);
-  }
+  };
   $scope.cancelRequest = function() {
     socket.emit("match.cancelrequest", {});
     $scope.waitingForMatch = false;
-  }
+  };
+
+  $scope.matchSingelplayer = function() {
+    SessionService.attachUser(userId, $scope.yourName, $scope.coinsToSolve, 'Alice', $scope.yourName, true);
+    $state.go('game');
+  };
+
   // on settingschange push it to the SessionService
   $scope.save = function() {
     $scope.editSettings = false;
