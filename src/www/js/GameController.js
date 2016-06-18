@@ -7,6 +7,16 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
         $scope.init();
     });
 
+
+      $scope.isMyTurn = function(){
+         return $scope.currentPlayer === $scope.map.players.you.name;
+       };
+
+      $scope.changePlayer = function(currentPlayer) {
+        $scope.currentPlayer = currentPlayer;
+        changePlayer(currentPlayer,$scope.map.players.you.name);
+      };
+
   $scope.init = function(){
     $scope.user = SessionService.getUser();
 
@@ -20,8 +30,10 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
     if ($scope.user.beginner != $scope.map.players.you.name) {
       $scope.lockField = true;
       $scope.map.startColor = "blue";
+      $scope.changePlayer($scope.map.players.opponent.name);
     } else {
       $scope.map.startColor = "red";
+      $scope.changePlayer($scope.map.players.you.name);
     }
 
     $scope.coinCount = 0;
@@ -43,6 +55,7 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
       $scope.turnTime -= 1;
       if($scope.turnTime < 0)
       {
+        $scope.turnTime =0;
         $interval.cancel($scope.countdownIntervall);
         $scope.timeoutPlayer();
       }
@@ -58,6 +71,7 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
 
   socket.on('game.turn', function(message) {
     if (message.turnNumber !== undefined) {
+      console.log("oppenent sent turn", message);
       $scope.map.applyCoin(
         new Coin(message.target.x,
           message.target.y,
@@ -68,11 +82,14 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
       $scope.turnCount = message.turnNumber;
       $scope.coinCount = message.turnNumber;
     } else {
+      console.log("oppenent sent empty");
       $scope.turnCount++;
       $scope.coinCount++;
     }
-    changePlayer($scope.map.players.you.name, $scope.map.players.you.name);
+    $scope.changePlayer($scope.map.players.you.name);
     $scope.lockField = false;
+
+    $scope.countdown(10);
   });
 
   socket.on('game.exit', function(message) {
@@ -88,21 +105,29 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
       $scope.coinCount++;
       $scope.turnCount++;
       if ($scope.turnCount % 2 == 1) {
-        changePlayer($scope.map.players.opponent.name, $scope.map.players.you.name);
+        $scope.changePlayer($scope.map.players.opponent.name);
       } else {
-        changePlayer($scope.map.players.you.name, $scope.map.players.you.name);
+        $scope.changePlayer($scope.map.players.you.name);
       }
-    } else { // multiplayer
-      fieldLock = true;
-      socket.emit("game.turn", {});
-      changePlayer($scope.map.players.opponent.name, $scope.map.players.you.name);
+      $scope.countdown(10);
     }
-    $scope.countdown(10);
+    else { // multiplayer
+      fieldLock = true;
+      if ($scope.isMyTurn()) { //its me
+        console.log($scope.map.players.you.name + " ist drann.");
+        $scope.countdown(10);
+        socket.emit("game.turn", {});
+        $scope.changePlayer($scope.map.players.opponent.name);
+      }
+      else {
+        console.log("gegner ist drann, warte");
+      }
+    }
   };
 
   $scope.insertCoinOnClick = function(x, y) {
     // only insert if allowed.
-    if ($scope.lockField === true) {
+    if ($scope.isMyTurn() === false) {
       return;
     }
 
@@ -115,14 +140,14 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
     if ($scope.user.isSingelplayer === true) {
       if ($scope.turnCount % 2 == 1) {
         inserted = $scope.map.applyCoin(new Coin(x, y, $scope.map.players.you.color, $scope.coinCount, $scope.map.players.you.color));
-        changePlayer($scope.map.players.opponent.name, $scope.map.players.you.name);
+        $scope.changePlayer($scope.map.players.opponent.name);
       } else {
         inserted = $scope.map.applyCoin(new Coin(x, y, $scope.map.players.opponent.color, $scope.coinCount, $scope.map.players.opponent.color));
-        changePlayer($scope.map.players.you.name, $scope.map.players.you.name);
+        $scope.changePlayer($scope.map.players.you.name);
       }
     } else {
       inserted = $scope.map.applyCoin(new Coin(x, y, $scope.map.players.you.color, $scope.coinCount, $scope.map.players.you.color));
-      changePlayer($scope.map.players.opponent.name, $scope.map.players.you.name);
+      $scope.changePlayer($scope.map.players.opponent.name);
     }
     $scope.countdown(10);
 
