@@ -1,30 +1,11 @@
-
 app.controller('GameController', function ($scope, $state, $ionicPopup, $timeout, socket, SessionService) {
   var map = new Map(6, 6, new player('Bob', 0, 'red'), new player('Alice', 0, 'blue'));
   $scope.map = map;
   var session = SessionService.getUser();
-  if(session.isSingelplayer == undefined || session.isSingelplayer == true) {
-    session.isSingelplayer = true;
-  }
-  if (session.beginner == undefined || session.beginner == "") {
-    session.beginner = $scope.map.players.you.name;
-  }
-  if (session.coinsToSolve == undefined || session.coinsToSolve == "") {
-    session.coinsToSolve = 3;
-  } else {
-    $scope.map.coinsToSolve = session.coinsToSolve;
-  }
-  if (session.name == undefined || session.name == "") {
-    session.name = $scope.map.players.you.name;
-  } else {
-    $scope.map.players.you.name = session.name;
-  }
+  $scope.map.coinsToSolve = session.coinsToSolve;
+  $scope.map.players.you.name = session.name;
+  $scope.map.players.opponent.name = session.opponent;
 
-  if (session.opponent == undefined  || session.opponent == "") {
-    session.opponent = $scope.map.players.opponent.name; // oponent name
-  } else {
-    $scope.map.players.opponent.name = session.opponent;
-  }
   var lockField = false;
   $scope.map.startColor = "red";
 
@@ -37,8 +18,6 @@ app.controller('GameController', function ($scope, $state, $ionicPopup, $timeout
 
 	var coinCount = 0;
   var turnCount = 0;
-  var currentPlayer = { playername: session.beginner , color: "blue" };
-
     $scope.back = function () {
         console.log('hallo game');
         //$location.path('/start');

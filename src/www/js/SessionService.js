@@ -2,7 +2,10 @@ app.service('SessionService', function ($localStorage) {
 
   var user = $localStorage.$default({
     name: 'Bob',
-    coinsToSolve : 3
+    coinsToSolve : 3,
+    opponent: 'Alice',
+    isSingelplayer: true,
+    beginner: 'Bob'
   });
 
   return {
