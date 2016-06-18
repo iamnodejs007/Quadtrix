@@ -18,7 +18,6 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
 
   $scope.init = function() {
     $scope.user = SessionService.getUser();
-
     var map = new Map(6, 6, new player($scope.user.name, 0, 'red'), new player($scope.user.opponent, 0, 'blue'));
     $scope.map = map;
     $scope.map.coinsToSolve = $scope.user.coinsToSolve;
@@ -112,11 +111,20 @@ app.controller('GameController', function($scope, $state, $ionicPopup, $timeout,
     }
   };
 
+  $scope.locked = false;
   $scope.insertCoinOnClick = function(x, y) {
     // only insert if allowed.
-    if ($scope.isMyTurn() === false && $scope.user.isSingelplayer === false) {
+
+    if (($scope.isMyTurn() === false && $scope.user.isSingelplayer === false)
+        || $scope.locked) {
       return;
     }
+
+    $scope.locked = true;
+    $timeout(function () {
+      $scope.locked = false;
+    }, 1000);
+
 
     $scope.coinCount++;
     $scope.turnCount++;
