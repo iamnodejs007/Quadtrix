@@ -24,6 +24,22 @@ div {
 
 }
 
+.glow {
+  filter: url(#blur-filter);
+  
+}
+.setActivePlayer{
+
+}
+
+@-webkit-keyframes activePlayer {
+	0% {
+      -webkit-transform: scale(1.0);
+      transform: scale(1.0);
+    }
+	100% { -webkit-transform: scale(1.2);}
+	}
+
 .rectangle{
   width: 15%;
   height: 15%;
