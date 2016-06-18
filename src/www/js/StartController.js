@@ -33,6 +33,6 @@ app.controller('StartController', function($scope, $state, socket, SessionServic
   // on settingschange push it to the SessionService
   $scope.save = function() {
     $scope.editSettings = false;
-    SessionService.attachUser(userId, $scope.yourName, $scope.coinsToSolve, "Bob", $scope.yourName, true);
+    SessionService.attachUser(userId, $scope.yourName, $scope.coinsToSolve, "Alice", $scope.yourName, true);
   };
 });
