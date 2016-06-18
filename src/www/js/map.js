@@ -6,7 +6,7 @@ class Map {
     this.coinCount = 0;
     this.players = { you: you, opponent: opponent }
     this.coinsToSolve = 3;
-    this.winCondiditon = 3;
+    this.winCondiditon = 100;
     }
 
     getCoins() { return this.coins; }
